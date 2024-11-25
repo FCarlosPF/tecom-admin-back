@@ -11,11 +11,20 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+load_dotenv()
+print("DATABASE_NAME:", os.getenv('DATABASE_NAME'))
+print("DATABASE_USER:", os.getenv('DATABASE_USER'))
+print("DATABASE_PASSWORD:", os.getenv('DATABASE_PASSWORD'))
+print("DATABASE_HOST:", os.getenv('DATABASE_HOST'))
+print("DATABASE_PORT:", os.getenv('DATABASE_PORT'))
+print("DOCKERIZED:", os.getenv('DOCKERIZED'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -107,19 +116,34 @@ WSGI_APPLICATION = 'administracion_tecom_back.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # Usamos el backend de PostgreSQL
-        'NAME': 'admin_tecom',                      # El nombre de tu base de datos
-        'USER': 'postgres',                       # Tu nombre de usuario de PostgreSQL
-        'PASSWORD': 'admin',               # La contraseña de tu usuario en PostgreSQL
-        'HOST': 'localhost',                        # O la IP/host donde está tu base de datos
-        'PORT': '5432',  
-        'OPTIONS': {
-            'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,public'  # Aquí defines los esquemas
-        }# El puerto de PostgreSQL (por defecto es 5432)
+if os.getenv('DOCKERIZED') == 'true':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DATABASE_NAME'),
+            'USER': os.getenv('DATABASE_USER'),
+            'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+            'HOST': os.getenv('DATABASE_HOST'),
+            'PORT': os.getenv('DATABASE_PORT'),
+            'OPTIONS': {
+                'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,public'
+            }
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',  # Usamos el backend de PostgreSQL
+            'NAME': 'admin_tecom',                      # El nombre de tu base de datos
+            'USER': 'postgres',                       # Tu nombre de usuario de PostgreSQL
+            'PASSWORD': 'admin',               # La contraseña de tu usuario en PostgreSQL
+            'HOST': 'localhost',                        # O la IP/host donde está tu base de datos
+            'PORT': '5432',  
+            'OPTIONS': {
+                'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,public'  # Aquí defines los esquemas
+            }# El puerto de PostgreSQL (por defecto es 5432)
+        }
+    }
 
 
 # Password validation

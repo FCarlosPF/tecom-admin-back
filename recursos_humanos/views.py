@@ -6,7 +6,8 @@ from .serializers import LoginSerializer, EmpleadoSerializer
 from .models import Empleados
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-                                                                                                                                           
+from django.http import JsonResponse
+                                                                                                                                  
 class LoginView(APIView):
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
@@ -50,5 +51,8 @@ class EmpleadoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Empleados.objects.all()
     serializer_class = EmpleadoSerializer
     lookup_field = 'id_empleado'
+    
+def healthcheck(request):
+    return JsonResponse({"status": "ok"})    
 
         
