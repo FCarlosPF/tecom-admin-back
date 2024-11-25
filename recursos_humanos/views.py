@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from .serializers import LoginSerializer, EmpleadoSerializer
-from .models import Empleados
+from .serializers import LoginSerializer, EmpleadoSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer
+from .models import Empleados, Areas, Roles
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import JsonResponse
@@ -55,4 +55,26 @@ class EmpleadoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 def healthcheck(request):
     return JsonResponse({"status": "ok"})    
 
-        
+class AreasListCreateView(generics.ListCreateAPIView):
+    queryset = Areas.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method in ['POST', 'PUT', 'PATCH']:
+            return AreasWriteSerializer
+        return AreasReadSerializer
+
+class RolesListCreateView(generics.ListCreateAPIView):
+    queryset = Roles.objects.all()
+    serializer_class = RolesSerializer
+
+class RolesRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Roles.objects.all()
+    serializer_class = RolesSerializer      
+
+class AreasRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Areas.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method in ['PUT', 'PATCH']:
+            return AreasWriteSerializer
+        return AreasReadSerializer    

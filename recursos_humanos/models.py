@@ -8,6 +8,7 @@ class Areas(models.Model):
 
     class Meta:
         db_table = 'areas'
+        managed = False
 
 class Roles(models.Model):
     id_rol = models.AutoField(primary_key=True)
@@ -16,6 +17,8 @@ class Roles(models.Model):
 
     class Meta:
         db_table = 'roles'
+        managed = False
+
 
 class Empleados(models.Model):
     id_empleado = models.AutoField(primary_key=True)
@@ -26,14 +29,15 @@ class Empleados(models.Model):
     sueldo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     activo = models.BooleanField(blank=True, null=True)
     foto = models.CharField(max_length=100, blank=True, null=True)
-    nombre_usuario = models.CharField(max_length=100)
-    contrasenia = models.TextField()
+    nombre_usuario = models.CharField(max_length=100, blank=True, null=True)  # No requerido
+    contrasenia = models.TextField(blank=True, null=True)  # No requerido
     fecha_contratacion = models.DateField()
     area = models.ForeignKey(Areas, models.DO_NOTHING, blank=True, null=True)
     rol = models.ForeignKey(Roles, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         db_table = 'empleados'
+        managed = False
     
     def get_tokens(self):
         """

@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import Empleados
+from .models import Empleados, Areas, Roles
 from django.contrib.auth.hashers import check_password
+from rest_framework import generics
 
 class EmpleadosSerializer(serializers.ModelSerializer):
     class Meta:
@@ -32,3 +33,22 @@ class EmpleadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Empleados
         fields = '__all__'    
+
+class AreasReadSerializer(serializers.ModelSerializer):
+    supervisor = EmpleadoSerializer()
+
+    class Meta:
+        model = Areas
+        fields = '__all__'
+
+class RolesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Roles
+        fields = '__all__'
+
+class AreasWriteSerializer(serializers.ModelSerializer):
+    supervisor = serializers.PrimaryKeyRelatedField(queryset=Empleados.objects.all(), required=False, allow_null=True)
+
+    class Meta:
+        model = Areas
+        fields = '__all__'  
