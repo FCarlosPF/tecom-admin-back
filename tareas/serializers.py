@@ -3,6 +3,7 @@ from .models import Tareas, AsignacionesTareas
 from django.utils.timezone import now
 from datetime import datetime
 from django.utils import timezone
+from recursos_humanos.serializers import EmpleadoSerializer
 
 class TareasSerializer(serializers.ModelSerializer):
     dias_restantes = serializers.SerializerMethodField()
@@ -21,7 +22,6 @@ class TareasSerializer(serializers.ModelSerializer):
             'estado',
             'dias_restantes',
             'dias_pasados',
-
         ]
 
     def get_dias_restantes(self, obj):
@@ -36,9 +36,45 @@ class TareasSerializer(serializers.ModelSerializer):
             return max(delta.days, 0)  # Devuelve 0 si aún no ha pasado la fecha
         return None
 
-class AsignacionesTareasSerializer(serializers.ModelSerializer):
+class AsignacionesTareasReadSerializer(serializers.ModelSerializer):
     tarea = TareasSerializer()
 
     class Meta:
         model = AsignacionesTareas
         fields = '__all__'
+
+class AsignacionesTareasCreateSerializer(serializers.ModelSerializer):
+    tarea = serializers.PrimaryKeyRelatedField(queryset=Tareas.objects.all())
+
+    class Meta:
+        model = AsignacionesTareas
+        fields = '__all__'
+
+    def create(self, validated_data):
+        return AsignacionesTareas.objects.create(**validated_data)
+
+class AsignacionesTareasUpdateSerializer(serializers.ModelSerializer):
+    tarea = TareasSerializer()
+
+    class Meta:
+        model = AsignacionesTareas
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        tarea_data = validated_data.pop('tarea')
+        tarea = instance.tarea
+
+        instance.empleado_id = validated_data.get('empleado_id', instance.empleado_id)
+        instance.asignador_id = validated_data.get('asignador_id', instance.asignador_id)
+        instance.save()
+
+        tarea.titulo = tarea_data.get('titulo', tarea.titulo)
+        tarea.descripcion = tarea_data.get('descripcion', tarea.descripcion)
+        tarea.fecha_inicio = tarea_data.get('fecha_inicio', tarea.fecha_inicio)
+        tarea.fecha_estimada_fin = tarea_data.get('fecha_estimada_fin', tarea.fecha_estimada_fin)
+        tarea.fecha_real_fin = tarea_data.get('fecha_real_fin', tarea.fecha_real_fin)
+        tarea.prioridad = tarea_data.get('prioridad', tarea.prioridad)
+        tarea.estado = tarea_data.get('estado', tarea.estado)
+        tarea.save()
+
+        return instance
