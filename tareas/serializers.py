@@ -1,13 +1,16 @@
 from rest_framework import serializers
 from .models import Tareas, AsignacionesTareas
-from django.utils.timezone import now
+from django.utils.timezone import now, make_aware
 from datetime import datetime
 from django.utils import timezone
 from recursos_humanos.serializers import EmpleadoSerializer
+from datetime import timedelta
+
+from django.utils import timezone
 
 class TareasSerializer(serializers.ModelSerializer):
-    dias_restantes = serializers.SerializerMethodField()
-    dias_pasados = serializers.SerializerMethodField()
+    tiempo_restante = serializers.SerializerMethodField()
+    tiempo_pasado = serializers.SerializerMethodField()
 
     class Meta:
         model = Tareas
@@ -20,25 +23,36 @@ class TareasSerializer(serializers.ModelSerializer):
             'fecha_real_fin',
             'prioridad',
             'estado',
-            'dias_restantes',
-            'dias_pasados',
+            'tiempo_restante',
+            'tiempo_pasado',
         ]
 
-    def get_dias_restantes(self, obj):
+    def get_tiempo_restante(self, obj):
         if obj.fecha_estimada_fin:
-            delta = obj.fecha_estimada_fin - timezone.now().date()
-            return max(delta.days, 0)  # Devuelve 0 si ya pasó la fecha
-        return None
+            fecha_estimada_fin = datetime.combine(obj.fecha_estimada_fin, datetime.min.time())
+            fecha_estimada_fin = make_aware(fecha_estimada_fin)  # Asegura que sea offset-aware
+            delta = fecha_estimada_fin - timezone.now()
+            if delta.total_seconds() > 0:
+                dias = delta.days
+                horas = (delta.seconds // 3600)
+                return {'dias': dias, 'horas': horas % 24}
+        return {'dias': 0, 'horas': 0}
 
-    def get_dias_pasados(self, obj):
+    def get_tiempo_pasado(self, obj):
         if obj.fecha_estimada_fin:
-            delta = timezone.now().date() - obj.fecha_estimada_fin
-            return max(delta.days, 0)  # Devuelve 0 si aún no ha pasado la fecha
-        return None
+            fecha_estimada_fin = datetime.combine(obj.fecha_estimada_fin, datetime.min.time())
+            fecha_estimada_fin = make_aware(fecha_estimada_fin)  # Asegura que sea offset-aware
+            delta = timezone.now() - fecha_estimada_fin
+            if delta.total_seconds() > 0:
+                dias = delta.days
+                horas = (delta.seconds // 3600)
+                return {'dias': dias, 'horas': horas % 24}
+        return {'dias': 0, 'horas': 0}
 
 class AsignacionesTareasReadSerializer(serializers.ModelSerializer):
     tarea = TareasSerializer()
-
+    empleado = EmpleadoSerializer()
+    asignador = EmpleadoSerializer()
     class Meta:
         model = AsignacionesTareas
         fields = '__all__'

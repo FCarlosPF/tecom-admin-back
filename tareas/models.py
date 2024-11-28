@@ -1,5 +1,5 @@
 from django.db import models
-
+from recursos_humanos.models import Empleados
 # Create your models here.
 class Tareas(models.Model):
     tarea_id = models.AutoField(primary_key=True)
@@ -18,8 +18,8 @@ class Tareas(models.Model):
 class AsignacionesTareas(models.Model):
     asignacion_id = models.AutoField(primary_key=True)
     tarea = models.ForeignKey('Tareas', models.DO_NOTHING, blank=True, null=True)
-    empleado_id = models.IntegerField(blank=True, null=True)
-    asignador_id = models.IntegerField(blank=True, null=True)
+    empleado = models.ForeignKey(Empleados, models.DO_NOTHING, blank=True, null=True, related_name='asignaciones_empleado')
+    asignador = models.ForeignKey(Empleados, models.DO_NOTHING, blank=True, null=True, related_name='asignaciones_asignador')
 
     class Meta:
         managed = False
