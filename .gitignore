@@ -12,6 +12,7 @@ __pycache__/
 .venv/
 env/
 venv/
+wslvenv
 
 # Archivos de configuración local
 .env

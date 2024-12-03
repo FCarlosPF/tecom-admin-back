@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'recursos_humanos',
     'sistemas',
     'tareas',
+    'proyectos',
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
@@ -133,14 +134,14 @@ if os.getenv('DOCKERIZED') == 'true':
 else:
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',  # Usamos el backend de PostgreSQL
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',  # Usamos el backend de PostgreSQL
             'NAME': 'admin_tecom',                      # El nombre de tu base de datos
             'USER': 'postgres',                       # Tu nombre de usuario de PostgreSQL
             'PASSWORD': 'admin',               # La contraseña de tu usuario en PostgreSQL
             'HOST': 'localhost',                        # O la IP/host donde está tu base de datos
             'PORT': '5432',  
             'OPTIONS': {
-                'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,public'  # Aquí defines los esquemas
+                'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,proyectos,public'  # Aquí defines los esquemas
             }# El puerto de PostgreSQL (por defecto es 5432)
         }
     }

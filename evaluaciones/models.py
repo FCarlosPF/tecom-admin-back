@@ -10,5 +10,5 @@ class EvaluacionesDesempenio(models.Model):
     evaluador_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'evaluaciones_desempenio'

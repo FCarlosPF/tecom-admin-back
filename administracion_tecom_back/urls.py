@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('recursos_humanos.urls')),  # Incluye las URLs de tu aplicación
     path('api/', include('tareas.urls')),  # Incluye las URLs de tu aplicación
+    path('api/', include('sistemas.urls')),  # Incluye las URLs de tu aplicación
+    path('api/', include('proyectos.urls')),  # Incluye las URLs de tu aplicación
 
 ]

@@ -25,29 +25,42 @@ class TareasSerializer(serializers.ModelSerializer):
             'estado',
             'tiempo_restante',
             'tiempo_pasado',
+            'tarea_padre'
         ]
 
     def get_tiempo_restante(self, obj):
+        if obj.estado == "Completada" and obj.tiempo_restante_paralizado:
+            return obj.tiempo_restante_paralizado  # Usar el tiempo paralizado si la tarea está completada
         if obj.fecha_estimada_fin:
-            fecha_estimada_fin = datetime.combine(obj.fecha_estimada_fin, datetime.min.time())
-            fecha_estimada_fin = make_aware(fecha_estimada_fin)  # Asegura que sea offset-aware
-            delta = fecha_estimada_fin - timezone.now()
+            delta = obj.fecha_estimada_fin - timezone.now()
             if delta.total_seconds() > 0:
                 dias = delta.days
                 horas = (delta.seconds // 3600)
-                return {'dias': dias, 'horas': horas % 24}
-        return {'dias': 0, 'horas': 0}
+                minutos = (delta.seconds % 3600) // 60
+                return {'dias': dias, 'horas': horas, 'minutos': minutos}
+        return {'dias': 0, 'horas': 0, 'minutos': 0}
 
     def get_tiempo_pasado(self, obj):
+        if obj.estado == "Completada" and obj.tiempo_pasado_paralizado:
+            return obj.tiempo_pasado_paralizado  # Usar el tiempo paralizado si la tarea está completada
         if obj.fecha_estimada_fin:
-            fecha_estimada_fin = datetime.combine(obj.fecha_estimada_fin, datetime.min.time())
-            fecha_estimada_fin = make_aware(fecha_estimada_fin)  # Asegura que sea offset-aware
-            delta = timezone.now() - fecha_estimada_fin
+            delta = timezone.now() - obj.fecha_estimada_fin
             if delta.total_seconds() > 0:
                 dias = delta.days
                 horas = (delta.seconds // 3600)
-                return {'dias': dias, 'horas': horas % 24}
-        return {'dias': 0, 'horas': 0}
+                minutos = (delta.seconds % 3600) // 60
+                return {'dias': dias, 'horas': horas, 'minutos': minutos}
+        return {'dias': 0, 'horas': 0, 'minutos': 0}
+
+    def update(self, instance, validated_data):
+        previous_estado = instance.estado
+        instance = super().update(instance, validated_data)
+        if previous_estado != "Completada" and instance.estado == "Completada":
+            instance.fecha_real_fin = timezone.now()
+            instance.tiempo_restante_paralizado = self.get_tiempo_restante(instance)
+            instance.tiempo_pasado_paralizado = self.get_tiempo_pasado(instance)
+            instance.save()
+        return instance
 
 class AsignacionesTareasReadSerializer(serializers.ModelSerializer):
     tarea = TareasSerializer()

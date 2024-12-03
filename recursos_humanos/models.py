@@ -8,7 +8,7 @@ class Areas(models.Model):
 
     class Meta:
         db_table = 'areas'
-        managed = False
+        managed = True
 
 class Roles(models.Model):
     id_rol = models.AutoField(primary_key=True)
@@ -17,7 +17,7 @@ class Roles(models.Model):
 
     class Meta:
         db_table = 'roles'
-        managed = False
+        managed = True
 
 
 class Empleados(models.Model):
@@ -37,7 +37,7 @@ class Empleados(models.Model):
 
     class Meta:
         db_table = 'empleados'
-        managed = False
+        managed = True
     
     def get_tokens(self):
         """
