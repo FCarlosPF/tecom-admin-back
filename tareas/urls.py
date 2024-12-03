@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import TareasListCreateView, TareasRetrieveUpdateDestroyView, AsignacionesTareasListCreateView, AsignacionesTareasRetrieveUpdateDestroyView,TareasPorEmpleadoView
+from .views import TareasListCreateView, TareasRetrieveUpdateDestroyView, AsignacionesTareasListCreateView, AsignacionesTareasRetrieveUpdateDestroyView,TareasPorEmpleadoView,MetricasPorEmpleadoView
 
 
 urlpatterns = [
@@ -8,5 +8,6 @@ urlpatterns = [
     path('asignacionestareas/', AsignacionesTareasListCreateView.as_view(), name='asignacionestareas-list-create'),
     path('asignacionestareas/<int:pk>/', AsignacionesTareasRetrieveUpdateDestroyView.as_view(), name='asignacionestareas-detail'),
     path('tareas/empleado/<int:empleado_id>/', TareasPorEmpleadoView.as_view(), name='tareas-por-empleado'),
+    path('metricas-empleado/<int:empleado_id>/', MetricasPorEmpleadoView.as_view(), name='metricas-empleado'),
 
 ]

@@ -12,7 +12,8 @@ class Tareas(models.Model):
     estado = models.CharField(max_length=20, blank=True, null=True)
     tiempo_restante_paralizado = models.JSONField(blank=True, null=True)  # Nuevo campo para almacenar el tiempo restante paralizado
     tiempo_pasado_paralizado = models.JSONField(blank=True, null=True)    # Nuevo campo para almacenar el tiempo pasado paralizado
-    
+    complejidad = models.IntegerField(default=1)
+    puntos = models.IntegerField(default=1)
     # Relación jerárquica para subtareas
     tarea_padre = models.ForeignKey(
         'self', 
