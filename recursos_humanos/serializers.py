@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from .models import Empleados, Areas, Roles
+from .models import Empleados, Areas, Roles, Oficina
 from django.contrib.auth.hashers import check_password
 from rest_framework import generics
+from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 class EmpleadosSerializer(serializers.ModelSerializer):
     class Meta:
@@ -52,3 +53,9 @@ class AreasWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Areas
         fields = '__all__'  
+
+class OficinaSerializer(GeoFeatureModelSerializer):
+    class Meta:
+        model = Oficina
+        geo_field = "geom"
+        fields = ('id', 'nombre', 'geom')

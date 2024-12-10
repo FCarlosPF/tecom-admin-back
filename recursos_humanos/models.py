@@ -1,5 +1,6 @@
 from django.db import models
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.gis.db import models
 
 class Areas(models.Model):
     area_id = models.AutoField(primary_key=True)
@@ -51,3 +52,11 @@ class Empleados(models.Model):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }
+    
+class Oficina(models.Model):
+    nombre = models.CharField(max_length=50, blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'oficina'

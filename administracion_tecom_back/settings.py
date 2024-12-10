@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'tareas',
     'proyectos',
     'rest_framework',
+    'rest_framework_gis',
     'corsheaders',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
@@ -109,6 +110,7 @@ TEMPLATES = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:3001",
     # Puedes añadir más orígenes si es necesario
 ]
 
@@ -132,7 +134,7 @@ if os.getenv('DOCKERIZED') == 'true':
         }
     }
 else:
-    DATABASES = {
+   DATABASES = {
         'default': {
             'ENGINE': 'django.contrib.gis.db.backends.postgis',  # Usamos el backend de PostgreSQL
             'NAME': 'admin_tecom',                      # El nombre de tu base de datos
@@ -145,7 +147,6 @@ else:
             }# El puerto de PostgreSQL (por defecto es 5432)
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
