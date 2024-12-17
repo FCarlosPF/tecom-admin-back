@@ -8,7 +8,8 @@ import openpyxl
 from django.http import HttpResponse
 from openpyxl.styles import Font, Alignment, PatternFill, Border,Side
 from django.db.models import F
-
+from django.utils import timezone
+from datetime import timedelta
 # Vistas para Tareas
 class TareasListCreateView(generics.ListCreateAPIView):
     queryset = Tareas.objects.all()
@@ -138,16 +139,23 @@ class ReporteTareasExcelView(APIView):
         wb.save(response)
         return response
     
-
-class ReporteTareasNoEntregadasATiempoView(APIView):
+class ReporteTareasNoEntregadasUltimoMesView(APIView):
     def get(self, request, *args, **kwargs):
-        # Filtrar las tareas que no se entregaron a tiempo
-        tareas_no_entregadas_a_tiempo = VistaEmpleadosTareas.objects.filter(fecha_real_fin__gt=F('fecha_estimada_fin'))
+        # Obtener la fecha actual y la fecha de hace un mes
+        fecha_actual = timezone.now()
+        fecha_hace_un_mes = fecha_actual - timedelta(days=30)
+
+        # Filtrar las tareas que no se entregaron a tiempo en el último mes
+        tareas_no_entregadas_a_tiempo = VistaEmpleadosTareas.objects.filter(
+            fecha_real_fin__gt=F('fecha_estimada_fin'),
+            fecha_estimada_fin__gte=fecha_hace_un_mes,
+            fecha_estimada_fin__lte=fecha_actual
+        )
 
         # Crear un libro de trabajo y hoja
         wb = openpyxl.Workbook()
         ws = wb.active
-        ws.title = "Tareas No Entregadas a Tiempo"
+        ws.title = "Tareas No Entregadas"
 
         # Definir los encabezados
         headers = ["ID Empleado", "Nombre Empleado", "Apellido Empleado", "ID Tarea", "Título Tarea", "Descripción Tarea", "Fecha Inicio", "Fecha Estimada Fin", "Fecha Real Fin", "Estado Tarea"]
@@ -195,6 +203,6 @@ class ReporteTareasNoEntregadasATiempoView(APIView):
 
         # Crear una respuesta HTTP con el archivo Excel
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=reporte_tareas_no_entregadas_a_tiempo.xlsx'
+        response['Content-Disposition'] = 'attachment; filename=reporte_tareas.xlsx'
         wb.save(response)
         return response

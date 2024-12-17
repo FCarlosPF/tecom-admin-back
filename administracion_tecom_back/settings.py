@@ -136,7 +136,10 @@ else:
             'USER': 'postgres',                       # Tu nombre de usuario de PostgreSQL
             'PASSWORD': 'admin',               # La contraseña de tu usuario en PostgreSQL
             'HOST': 'localhost',                        # O la IP/host donde está tu base de datos
-            'PORT': '5432'
+            'PORT': '5432',  
+            'OPTIONS': {
+                'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,proyectos,public'  # Aquí defines los esquemas
+            }# El puerto de PostgreSQL (por defecto es 5432)
         }
     }
 
