@@ -8,7 +8,7 @@ class Areas(models.Model):
     supervisor = models.ForeignKey('Empleados', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        db_table = 'areas'
+        db_table = '"recursos_humanos"."areas"'
         managed = True
 
 class Roles(models.Model):
@@ -17,7 +17,7 @@ class Roles(models.Model):
     describcion = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
-        db_table = 'roles'
+        db_table = '"recursos_humanos"."roles"'
         managed = True
 
 
@@ -35,9 +35,10 @@ class Empleados(models.Model):
     fecha_contratacion = models.DateField()
     area = models.ForeignKey(Areas, models.DO_NOTHING, blank=True, null=True)
     rol = models.ForeignKey(Roles, models.DO_NOTHING, blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True)
 
     class Meta:
-        db_table = 'empleados'
+        db_table = '"recursos_humanos"."empleados"'
         managed = True
     
     def get_tokens(self):
@@ -59,4 +60,25 @@ class Oficina(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'oficina'
+        db_table = '"recursos_humanos"."oficina"'
+
+class VistaEmpleadosTareas(models.Model):
+    id_empleado = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=100)
+    apellidos = models.CharField(max_length=100)
+    correo = models.EmailField()
+    especialidad = models.CharField(max_length=100, blank=True, null=True)
+    sueldo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    activo = models.BooleanField(default=True)
+    foto = models.CharField(max_length=100, blank=True, null=True)
+    nombre_usuario = models.CharField(max_length=100, unique=True)
+    contrasenia = models.CharField(max_length=100)
+    fecha_contratacion = models.DateField()
+    area_id = models.IntegerField(blank=True, null=True)
+    rol_id = models.IntegerField(blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True)
+    cantidad_tareas_pendientes_o_en_progreso = models.IntegerField()
+
+    class Meta:
+        managed = False  # No queremos que Django intente crear esta tabla
+        db_table = '"recursos_humanos"."vista_empleados_tareas"'

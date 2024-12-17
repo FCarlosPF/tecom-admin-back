@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from .serializers import LoginSerializer, EmpleadoSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
-from .models import Empleados, Areas, Roles, Oficina
+from .serializers import VistaEmpleadosTareasSerializer, LoginSerializer, EmpleadoSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
+from .models import Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import JsonResponse
@@ -83,3 +83,7 @@ class AreasRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 class OficinaViewSet(viewsets.ModelViewSet):
     queryset = Oficina.objects.all()
     serializer_class = OficinaSerializer
+
+class VistaEmpleadosTareasListView(generics.ListAPIView):
+    queryset = VistaEmpleadosTareas.objects.all()
+    serializer_class = VistaEmpleadosTareasSerializer

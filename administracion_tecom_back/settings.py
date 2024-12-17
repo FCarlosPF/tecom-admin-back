@@ -19,12 +19,7 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
-print("DATABASE_NAME:", os.getenv('DATABASE_NAME'))
-print("DATABASE_USER:", os.getenv('DATABASE_USER'))
-print("DATABASE_PASSWORD:", os.getenv('DATABASE_PASSWORD'))
-print("DATABASE_HOST:", os.getenv('DATABASE_HOST'))
-print("DATABASE_PORT:", os.getenv('DATABASE_PORT'))
-print("DOCKERIZED:", os.getenv('DOCKERIZED'))
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -134,17 +129,14 @@ if os.getenv('DOCKERIZED') == 'true':
         }
     }
 else:
-   DATABASES = {
+    DATABASES = {
         'default': {
             'ENGINE': 'django.contrib.gis.db.backends.postgis',  # Usamos el backend de PostgreSQL
             'NAME': 'admin_tecom',                      # El nombre de tu base de datos
             'USER': 'postgres',                       # Tu nombre de usuario de PostgreSQL
             'PASSWORD': 'admin',               # La contraseña de tu usuario en PostgreSQL
             'HOST': 'localhost',                        # O la IP/host donde está tu base de datos
-            'PORT': '5432',  
-            'OPTIONS': {
-                'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,proyectos,public'  # Aquí defines los esquemas
-            }# El puerto de PostgreSQL (por defecto es 5432)
+            'PORT': '5432'
         }
     }
 
@@ -182,8 +174,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

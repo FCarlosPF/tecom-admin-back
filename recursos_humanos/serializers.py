@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Empleados, Areas, Roles, Oficina
+from .models import Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas
 from django.contrib.auth.hashers import check_password
 from rest_framework import generics
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
@@ -7,9 +7,10 @@ from rest_framework_gis.serializers import GeoFeatureModelSerializer
 class EmpleadosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Empleados
-        fields = ['id_empleado', 'nombre', 'apellidos', 'correo', 'especialidad', 'sueldo', 'activo', 'foto', 'nombre_usuario', 'contrasenia', 'fecha_contratacion', 'area', 'rol']
+        fields = ['id_empleado', 'nombre', 'apellidos', 'correo', 'especialidad', 'sueldo', 'activo', 'foto', 'nombre_usuario', 'contrasenia', 'fecha_contratacion', 'area', 'rol','geom']
         extra_kwargs = {'contrasenia': {'write_only': True}}
-        
+        geo_field = "geom"
+
 class LoginSerializer(serializers.Serializer):
     nombre_usuario = serializers.CharField()
     contrasenia = serializers.CharField()
@@ -59,3 +60,10 @@ class OficinaSerializer(GeoFeatureModelSerializer):
         model = Oficina
         geo_field = "geom"
         fields = ('id', 'nombre', 'geom')
+        
+
+class VistaEmpleadosTareasSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VistaEmpleadosTareas
+        geo_field = "geom"
+        fields = '__all__'

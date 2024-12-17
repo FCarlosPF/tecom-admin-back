@@ -27,7 +27,7 @@ class Tareas(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'tareas'
+        db_table = '"tareas"."tareas"'
         
 class AsignacionesTareas(models.Model):
     asignacion_id = models.AutoField(primary_key=True)
@@ -37,4 +37,20 @@ class AsignacionesTareas(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'asignaciones_tareas'
+        db_table = '"tareas"."asignaciones_tareas"'
+
+class VistaEmpleadosTareas(models.Model):
+    id_empleado = models.IntegerField(primary_key=True)
+    nombre_empleado = models.CharField(max_length=255)
+    apellido_empleado = models.CharField(max_length=255)
+    tarea_id = models.IntegerField()
+    titulo_tarea = models.CharField(max_length=255)
+    descripcion_tarea = models.TextField()
+    fecha_inicio = models.DateTimeField()
+    fecha_estimada_fin = models.DateTimeField()
+    fecha_real_fin = models.DateTimeField(blank=True, null=True)
+    estado_tarea = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False  # No permitir a Django gestionar esta tabla
+        db_table = '"tareas"."vista_empleados_tareas"'
