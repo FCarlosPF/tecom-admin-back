@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from .serializers import VistaEmpleadosTareasSerializer, LoginSerializer, EmpleadoSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
-from .models import Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas
+from .serializers import EmpleadosTareasPendientesSerializer,VistaEmpleadosTareasSerializer, LoginSerializer, EmpleadoSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
+from .models import Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas, EmpleadosTareasPendientes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import JsonResponse
@@ -87,3 +87,10 @@ class OficinaViewSet(viewsets.ModelViewSet):
 class VistaEmpleadosTareasListView(generics.ListAPIView):
     queryset = VistaEmpleadosTareas.objects.all()
     serializer_class = VistaEmpleadosTareasSerializer
+
+class EmpleadosTareasPendientesListView(generics.ListAPIView):
+    serializer_class = EmpleadosTareasPendientesSerializer
+
+    def get_queryset(self):
+        id_empleado = self.kwargs['id_empleado']
+        return EmpleadosTareasPendientes.objects.filter(id_empleado=id_empleado)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas
+from .models import EmpleadosTareasPendientes, Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas
 from django.contrib.auth.hashers import check_password
 from rest_framework import generics
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
@@ -66,4 +66,9 @@ class VistaEmpleadosTareasSerializer(serializers.ModelSerializer):
     class Meta:
         model = VistaEmpleadosTareas
         geo_field = "geom"
+        fields = '__all__'
+
+class EmpleadosTareasPendientesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmpleadosTareasPendientes
         fields = '__all__'
