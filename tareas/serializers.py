@@ -5,12 +5,17 @@ from datetime import datetime
 from django.utils import timezone
 from recursos_humanos.serializers import EmpleadoSerializer
 from datetime import timedelta
-
+from proyectos.serializers import ProyectosSerializer
+from proyectos.models import Proyectos
 from django.utils import timezone
 
 class TareasSerializer(serializers.ModelSerializer):
     tiempo_restante = serializers.SerializerMethodField()
     tiempo_pasado = serializers.SerializerMethodField()
+    proyecto = ProyectosSerializer(read_only=True)
+    proyecto_id = serializers.PrimaryKeyRelatedField(
+        queryset=Proyectos.objects.all(), source='proyecto', write_only=True
+    )
 
     class Meta:
         model = Tareas
@@ -25,7 +30,9 @@ class TareasSerializer(serializers.ModelSerializer):
             'estado',
             'tiempo_restante',
             'tiempo_pasado',
-            'tarea_padre'
+            'tarea_padre',
+            'proyecto',
+            'proyecto_id'
         ]
 
     def get_tiempo_restante(self, obj):
@@ -61,7 +68,7 @@ class TareasSerializer(serializers.ModelSerializer):
             instance.tiempo_pasado_paralizado = self.get_tiempo_pasado(instance)
             instance.save()
         return instance
-
+    
 class AsignacionesTareasReadSerializer(serializers.ModelSerializer):
     tarea = TareasSerializer()
     empleado = EmpleadoSerializer()

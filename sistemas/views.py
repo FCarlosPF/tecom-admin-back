@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from .models import Asistencias
-from .serializers import AsistenciasSerializer
+from .models import Asistencias,Notificaciones
+from .serializers import AsistenciasSerializer,NotificacionesSerializer
 from recursos_humanos.models import Empleados
 
 class AsistenciasViewSet(viewsets.ModelViewSet):
@@ -29,3 +29,8 @@ class AsistenciasViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(asistencia)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class NotificacionesViewSet(viewsets.ModelViewSet):
+    queryset = Notificaciones.objects.all()
+    serializer_class = NotificacionesSerializer

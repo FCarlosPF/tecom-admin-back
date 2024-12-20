@@ -24,3 +24,19 @@ class Asistencias(models.Model):
         managed = True
         db_table = 'asistencias'
         unique_together = ('empleado', 'fecha')  # Un empleado solo puede tener un registro por día
+
+
+class Notificaciones(models.Model):
+    notificacion_id = models.AutoField(primary_key=True)
+    empleado = models.ForeignKey(Empleados, related_name='notificaciones', on_delete=models.DO_NOTHING, blank=True, null=True)
+    tipo_notificacion = models.CharField(max_length=50)
+    mensaje = models.TextField()
+    fecha_notificacion = models.DateField()
+    hora_inicio = models.TimeField(blank=True, null=True)
+    hora_fin = models.TimeField(blank=True, null=True)
+    creada_en = models.DateTimeField(blank=True, null=True)
+    leida = models.BooleanField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'notificaciones'
