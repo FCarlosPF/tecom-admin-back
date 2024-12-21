@@ -2,10 +2,10 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.2 (Ubuntu 17.2-1.pgdg24.04+1)
--- Dumped by pg_dump version 17.2 (Ubuntu 17.2-1.pgdg24.04+1)
+-- Dumped from database version 17.2
+-- Dumped by pg_dump version 17.2
 
--- Started on 2024-12-04 15:07:16 -05
+-- Started on 2024-12-17 18:21:11
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -20,7 +20,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 7 (class 2615 OID 18736)
+-- TOC entry 7 (class 2615 OID 18266)
 -- Name: evaluaciones; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -30,7 +30,7 @@ CREATE SCHEMA evaluaciones;
 ALTER SCHEMA evaluaciones OWNER TO postgres;
 
 --
--- TOC entry 8 (class 2615 OID 18737)
+-- TOC entry 8 (class 2615 OID 18267)
 -- Name: permisos; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -40,7 +40,7 @@ CREATE SCHEMA permisos;
 ALTER SCHEMA permisos OWNER TO postgres;
 
 --
--- TOC entry 9 (class 2615 OID 18738)
+-- TOC entry 9 (class 2615 OID 18268)
 -- Name: proyectos; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -50,7 +50,7 @@ CREATE SCHEMA proyectos;
 ALTER SCHEMA proyectos OWNER TO postgres;
 
 --
--- TOC entry 10 (class 2615 OID 18739)
+-- TOC entry 10 (class 2615 OID 18269)
 -- Name: recursos_humanos; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -60,7 +60,7 @@ CREATE SCHEMA recursos_humanos;
 ALTER SCHEMA recursos_humanos OWNER TO postgres;
 
 --
--- TOC entry 11 (class 2615 OID 18740)
+-- TOC entry 11 (class 2615 OID 18270)
 -- Name: sistemas; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -70,7 +70,7 @@ CREATE SCHEMA sistemas;
 ALTER SCHEMA sistemas OWNER TO postgres;
 
 --
--- TOC entry 12 (class 2615 OID 18741)
+-- TOC entry 12 (class 2615 OID 18271)
 -- Name: tareas; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
@@ -80,7 +80,7 @@ CREATE SCHEMA tareas;
 ALTER SCHEMA tareas OWNER TO postgres;
 
 --
--- TOC entry 2 (class 3079 OID 18742)
+-- TOC entry 2 (class 3079 OID 18272)
 -- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -88,7 +88,7 @@ CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
 
 
 --
--- TOC entry 4616 (class 0 OID 0)
+-- TOC entry 6004 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: 
 --
@@ -101,7 +101,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 229 (class 1259 OID 19814)
+-- TOC entry 229 (class 1259 OID 19344)
 -- Name: evaluaciones_desempeño; Type: TABLE; Schema: evaluaciones; Owner: postgres
 --
 
@@ -118,7 +118,7 @@ CREATE TABLE evaluaciones."evaluaciones_desempeño" (
 ALTER TABLE evaluaciones."evaluaciones_desempeño" OWNER TO postgres;
 
 --
--- TOC entry 230 (class 1259 OID 19819)
+-- TOC entry 230 (class 1259 OID 19349)
 -- Name: evaluaciones_desempeño_evaluacion_id_seq; Type: SEQUENCE; Schema: evaluaciones; Owner: postgres
 --
 
@@ -134,7 +134,7 @@ CREATE SEQUENCE evaluaciones."evaluaciones_desempeño_evaluacion_id_seq"
 ALTER SEQUENCE evaluaciones."evaluaciones_desempeño_evaluacion_id_seq" OWNER TO postgres;
 
 --
--- TOC entry 4617 (class 0 OID 0)
+-- TOC entry 6005 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: evaluaciones_desempeño_evaluacion_id_seq; Type: SEQUENCE OWNED BY; Schema: evaluaciones; Owner: postgres
 --
@@ -143,7 +143,7 @@ ALTER SEQUENCE evaluaciones."evaluaciones_desempeño_evaluacion_id_seq" OWNED BY
 
 
 --
--- TOC entry 231 (class 1259 OID 19820)
+-- TOC entry 231 (class 1259 OID 19350)
 -- Name: solicitudes_permiso; Type: TABLE; Schema: permisos; Owner: postgres
 --
 
@@ -162,7 +162,7 @@ CREATE TABLE permisos.solicitudes_permiso (
 ALTER TABLE permisos.solicitudes_permiso OWNER TO postgres;
 
 --
--- TOC entry 232 (class 1259 OID 19825)
+-- TOC entry 232 (class 1259 OID 19355)
 -- Name: solicitudes_permiso_permiso_id_seq; Type: SEQUENCE; Schema: permisos; Owner: postgres
 --
 
@@ -178,7 +178,7 @@ CREATE SEQUENCE permisos.solicitudes_permiso_permiso_id_seq
 ALTER SEQUENCE permisos.solicitudes_permiso_permiso_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4618 (class 0 OID 0)
+-- TOC entry 6006 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: solicitudes_permiso_permiso_id_seq; Type: SEQUENCE OWNED BY; Schema: permisos; Owner: postgres
 --
@@ -187,7 +187,7 @@ ALTER SEQUENCE permisos.solicitudes_permiso_permiso_id_seq OWNED BY permisos.sol
 
 
 --
--- TOC entry 233 (class 1259 OID 19826)
+-- TOC entry 233 (class 1259 OID 19356)
 -- Name: costos; Type: TABLE; Schema: proyectos; Owner: postgres
 --
 
@@ -198,15 +198,14 @@ CREATE TABLE proyectos.costos (
     fecha date NOT NULL,
     categoria character varying(100),
     tipo character varying(50),
-    proyecto_id integer,
-    proveedor_id integer
+    proyecto_id integer
 );
 
 
 ALTER TABLE proyectos.costos OWNER TO postgres;
 
 --
--- TOC entry 234 (class 1259 OID 19831)
+-- TOC entry 234 (class 1259 OID 19361)
 -- Name: costos_costo_id_seq; Type: SEQUENCE; Schema: proyectos; Owner: postgres
 --
 
@@ -222,7 +221,7 @@ CREATE SEQUENCE proyectos.costos_costo_id_seq
 ALTER SEQUENCE proyectos.costos_costo_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4619 (class 0 OID 0)
+-- TOC entry 6007 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: costos_costo_id_seq; Type: SEQUENCE OWNED BY; Schema: proyectos; Owner: postgres
 --
@@ -231,176 +230,7 @@ ALTER SEQUENCE proyectos.costos_costo_id_seq OWNED BY proyectos.costos.costo_id;
 
 
 --
--- TOC entry 274 (class 1259 OID 24787)
--- Name: facturas; Type: TABLE; Schema: proyectos; Owner: postgres
---
-
-CREATE TABLE proyectos.facturas (
-    id_factura integer NOT NULL,
-    id_orden integer,
-    numero_factura character varying(50) NOT NULL,
-    fecha_emision date,
-    monto numeric(15,2),
-    estado_pago character varying(20) DEFAULT 'Pendiente'::character varying,
-    CONSTRAINT facturas_estado_pago_check CHECK (((estado_pago)::text = ANY ((ARRAY['Pendiente'::character varying, 'Pagado'::character varying, 'Parcial'::character varying])::text[])))
-);
-
-
-ALTER TABLE proyectos.facturas OWNER TO postgres;
-
---
--- TOC entry 273 (class 1259 OID 24786)
--- Name: facturas_id_factura_seq; Type: SEQUENCE; Schema: proyectos; Owner: postgres
---
-
-CREATE SEQUENCE proyectos.facturas_id_factura_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE proyectos.facturas_id_factura_seq OWNER TO postgres;
-
---
--- TOC entry 4620 (class 0 OID 0)
--- Dependencies: 273
--- Name: facturas_id_factura_seq; Type: SEQUENCE OWNED BY; Schema: proyectos; Owner: postgres
---
-
-ALTER SEQUENCE proyectos.facturas_id_factura_seq OWNED BY proyectos.facturas.id_factura;
-
-
---
--- TOC entry 272 (class 1259 OID 24768)
--- Name: ordenescompra; Type: TABLE; Schema: proyectos; Owner: postgres
---
-
-CREATE TABLE proyectos.ordenescompra (
-    id_orden integer NOT NULL,
-    id_proyecto integer,
-    id_proveedor integer,
-    monto numeric(15,2),
-    fecha date,
-    estado character varying(20) DEFAULT 'Pendiente'::character varying,
-    CONSTRAINT ordenescompra_estado_check CHECK (((estado)::text = ANY ((ARRAY['Pendiente'::character varying, 'Completado'::character varying, 'Cancelado'::character varying])::text[])))
-);
-
-
-ALTER TABLE proyectos.ordenescompra OWNER TO postgres;
-
---
--- TOC entry 271 (class 1259 OID 24767)
--- Name: ordenescompra_id_orden_seq; Type: SEQUENCE; Schema: proyectos; Owner: postgres
---
-
-CREATE SEQUENCE proyectos.ordenescompra_id_orden_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE proyectos.ordenescompra_id_orden_seq OWNER TO postgres;
-
---
--- TOC entry 4621 (class 0 OID 0)
--- Dependencies: 271
--- Name: ordenescompra_id_orden_seq; Type: SEQUENCE OWNED BY; Schema: proyectos; Owner: postgres
---
-
-ALTER SEQUENCE proyectos.ordenescompra_id_orden_seq OWNED BY proyectos.ordenescompra.id_orden;
-
-
---
--- TOC entry 276 (class 1259 OID 24803)
--- Name: pagos; Type: TABLE; Schema: proyectos; Owner: postgres
---
-
-CREATE TABLE proyectos.pagos (
-    id_pago integer NOT NULL,
-    id_factura integer,
-    monto numeric(15,2),
-    fecha_pago date,
-    metodo_pago character varying(50),
-    CONSTRAINT pagos_metodo_pago_check CHECK (((metodo_pago)::text = ANY ((ARRAY['Transferencia'::character varying, 'Efectivo'::character varying, 'Tarjeta'::character varying, 'Cheque'::character varying])::text[])))
-);
-
-
-ALTER TABLE proyectos.pagos OWNER TO postgres;
-
---
--- TOC entry 275 (class 1259 OID 24802)
--- Name: pagos_id_pago_seq; Type: SEQUENCE; Schema: proyectos; Owner: postgres
---
-
-CREATE SEQUENCE proyectos.pagos_id_pago_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE proyectos.pagos_id_pago_seq OWNER TO postgres;
-
---
--- TOC entry 4622 (class 0 OID 0)
--- Dependencies: 275
--- Name: pagos_id_pago_seq; Type: SEQUENCE OWNED BY; Schema: proyectos; Owner: postgres
---
-
-ALTER SEQUENCE proyectos.pagos_id_pago_seq OWNED BY proyectos.pagos.id_pago;
-
-
---
--- TOC entry 270 (class 1259 OID 24735)
--- Name: proveedores; Type: TABLE; Schema: proyectos; Owner: postgres
---
-
-CREATE TABLE proyectos.proveedores (
-    id_proveedor integer NOT NULL,
-    nombre character varying(255),
-    direccion character varying(255),
-    telefono character varying(20),
-    correo character varying(255)
-);
-
-
-ALTER TABLE proyectos.proveedores OWNER TO postgres;
-
---
--- TOC entry 269 (class 1259 OID 24734)
--- Name: proveedores_id_proveedor_seq; Type: SEQUENCE; Schema: proyectos; Owner: postgres
---
-
-CREATE SEQUENCE proyectos.proveedores_id_proveedor_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE proyectos.proveedores_id_proveedor_seq OWNER TO postgres;
-
---
--- TOC entry 4623 (class 0 OID 0)
--- Dependencies: 269
--- Name: proveedores_id_proveedor_seq; Type: SEQUENCE OWNED BY; Schema: proyectos; Owner: postgres
---
-
-ALTER SEQUENCE proyectos.proveedores_id_proveedor_seq OWNED BY proyectos.proveedores.id_proveedor;
-
-
---
--- TOC entry 235 (class 1259 OID 19832)
+-- TOC entry 235 (class 1259 OID 19362)
 -- Name: proyectos; Type: TABLE; Schema: proyectos; Owner: postgres
 --
 
@@ -419,7 +249,7 @@ CREATE TABLE proyectos.proyectos (
 ALTER TABLE proyectos.proyectos OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1259 OID 19838)
+-- TOC entry 236 (class 1259 OID 19368)
 -- Name: proyectos_proyecto_id_seq; Type: SEQUENCE; Schema: proyectos; Owner: postgres
 --
 
@@ -435,7 +265,7 @@ CREATE SEQUENCE proyectos.proyectos_proyecto_id_seq
 ALTER SEQUENCE proyectos.proyectos_proyecto_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4624 (class 0 OID 0)
+-- TOC entry 6008 (class 0 OID 0)
 -- Dependencies: 236
 -- Name: proyectos_proyecto_id_seq; Type: SEQUENCE OWNED BY; Schema: proyectos; Owner: postgres
 --
@@ -444,7 +274,7 @@ ALTER SEQUENCE proyectos.proyectos_proyecto_id_seq OWNED BY proyectos.proyectos.
 
 
 --
--- TOC entry 237 (class 1259 OID 19839)
+-- TOC entry 237 (class 1259 OID 19369)
 -- Name: areas; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -459,7 +289,7 @@ CREATE TABLE recursos_humanos.areas (
 ALTER TABLE recursos_humanos.areas OWNER TO postgres;
 
 --
--- TOC entry 238 (class 1259 OID 19842)
+-- TOC entry 238 (class 1259 OID 19374)
 -- Name: areas_area_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -475,7 +305,7 @@ CREATE SEQUENCE recursos_humanos.areas_area_id_seq
 ALTER SEQUENCE recursos_humanos.areas_area_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4625 (class 0 OID 0)
+-- TOC entry 6009 (class 0 OID 0)
 -- Dependencies: 238
 -- Name: areas_area_id_seq; Type: SEQUENCE OWNED BY; Schema: recursos_humanos; Owner: postgres
 --
@@ -484,7 +314,7 @@ ALTER SEQUENCE recursos_humanos.areas_area_id_seq OWNED BY recursos_humanos.area
 
 
 --
--- TOC entry 254 (class 1259 OID 24599)
+-- TOC entry 239 (class 1259 OID 19375)
 -- Name: auth_group; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -497,7 +327,7 @@ CREATE TABLE recursos_humanos.auth_group (
 ALTER TABLE recursos_humanos.auth_group OWNER TO postgres;
 
 --
--- TOC entry 253 (class 1259 OID 24598)
+-- TOC entry 240 (class 1259 OID 19378)
 -- Name: auth_group_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -512,7 +342,7 @@ ALTER TABLE recursos_humanos.auth_group ALTER COLUMN id ADD GENERATED BY DEFAULT
 
 
 --
--- TOC entry 256 (class 1259 OID 24607)
+-- TOC entry 241 (class 1259 OID 19379)
 -- Name: auth_group_permissions; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -526,7 +356,7 @@ CREATE TABLE recursos_humanos.auth_group_permissions (
 ALTER TABLE recursos_humanos.auth_group_permissions OWNER TO postgres;
 
 --
--- TOC entry 255 (class 1259 OID 24606)
+-- TOC entry 242 (class 1259 OID 19382)
 -- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -541,7 +371,7 @@ ALTER TABLE recursos_humanos.auth_group_permissions ALTER COLUMN id ADD GENERATE
 
 
 --
--- TOC entry 252 (class 1259 OID 24593)
+-- TOC entry 243 (class 1259 OID 19383)
 -- Name: auth_permission; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -556,7 +386,7 @@ CREATE TABLE recursos_humanos.auth_permission (
 ALTER TABLE recursos_humanos.auth_permission OWNER TO postgres;
 
 --
--- TOC entry 251 (class 1259 OID 24592)
+-- TOC entry 244 (class 1259 OID 19386)
 -- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -571,7 +401,7 @@ ALTER TABLE recursos_humanos.auth_permission ALTER COLUMN id ADD GENERATED BY DE
 
 
 --
--- TOC entry 258 (class 1259 OID 24613)
+-- TOC entry 245 (class 1259 OID 19387)
 -- Name: auth_user; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -593,7 +423,7 @@ CREATE TABLE recursos_humanos.auth_user (
 ALTER TABLE recursos_humanos.auth_user OWNER TO postgres;
 
 --
--- TOC entry 260 (class 1259 OID 24621)
+-- TOC entry 246 (class 1259 OID 19392)
 -- Name: auth_user_groups; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -607,7 +437,7 @@ CREATE TABLE recursos_humanos.auth_user_groups (
 ALTER TABLE recursos_humanos.auth_user_groups OWNER TO postgres;
 
 --
--- TOC entry 259 (class 1259 OID 24620)
+-- TOC entry 247 (class 1259 OID 19395)
 -- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -622,7 +452,7 @@ ALTER TABLE recursos_humanos.auth_user_groups ALTER COLUMN id ADD GENERATED BY D
 
 
 --
--- TOC entry 257 (class 1259 OID 24612)
+-- TOC entry 248 (class 1259 OID 19396)
 -- Name: auth_user_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -637,7 +467,7 @@ ALTER TABLE recursos_humanos.auth_user ALTER COLUMN id ADD GENERATED BY DEFAULT 
 
 
 --
--- TOC entry 262 (class 1259 OID 24627)
+-- TOC entry 249 (class 1259 OID 19397)
 -- Name: auth_user_user_permissions; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -651,7 +481,7 @@ CREATE TABLE recursos_humanos.auth_user_user_permissions (
 ALTER TABLE recursos_humanos.auth_user_user_permissions OWNER TO postgres;
 
 --
--- TOC entry 261 (class 1259 OID 24626)
+-- TOC entry 250 (class 1259 OID 19400)
 -- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -666,7 +496,7 @@ ALTER TABLE recursos_humanos.auth_user_user_permissions ALTER COLUMN id ADD GENE
 
 
 --
--- TOC entry 264 (class 1259 OID 24685)
+-- TOC entry 251 (class 1259 OID 19401)
 -- Name: django_admin_log; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -686,7 +516,7 @@ CREATE TABLE recursos_humanos.django_admin_log (
 ALTER TABLE recursos_humanos.django_admin_log OWNER TO postgres;
 
 --
--- TOC entry 263 (class 1259 OID 24684)
+-- TOC entry 252 (class 1259 OID 19407)
 -- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -701,7 +531,7 @@ ALTER TABLE recursos_humanos.django_admin_log ALTER COLUMN id ADD GENERATED BY D
 
 
 --
--- TOC entry 250 (class 1259 OID 24585)
+-- TOC entry 253 (class 1259 OID 19408)
 -- Name: django_content_type; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -715,7 +545,7 @@ CREATE TABLE recursos_humanos.django_content_type (
 ALTER TABLE recursos_humanos.django_content_type OWNER TO postgres;
 
 --
--- TOC entry 249 (class 1259 OID 24584)
+-- TOC entry 254 (class 1259 OID 19411)
 -- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -730,7 +560,7 @@ ALTER TABLE recursos_humanos.django_content_type ALTER COLUMN id ADD GENERATED B
 
 
 --
--- TOC entry 268 (class 1259 OID 24724)
+-- TOC entry 255 (class 1259 OID 19412)
 -- Name: django_migrations; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -745,7 +575,7 @@ CREATE TABLE recursos_humanos.django_migrations (
 ALTER TABLE recursos_humanos.django_migrations OWNER TO postgres;
 
 --
--- TOC entry 267 (class 1259 OID 24723)
+-- TOC entry 256 (class 1259 OID 19417)
 -- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -760,7 +590,7 @@ ALTER TABLE recursos_humanos.django_migrations ALTER COLUMN id ADD GENERATED BY 
 
 
 --
--- TOC entry 239 (class 1259 OID 19843)
+-- TOC entry 257 (class 1259 OID 19418)
 -- Name: empleados; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -785,7 +615,7 @@ CREATE TABLE recursos_humanos.empleados (
 ALTER TABLE recursos_humanos.empleados OWNER TO postgres;
 
 --
--- TOC entry 240 (class 1259 OID 19849)
+-- TOC entry 258 (class 1259 OID 19424)
 -- Name: empleados_id_empleado_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -801,8 +631,8 @@ CREATE SEQUENCE recursos_humanos.empleados_id_empleado_seq
 ALTER SEQUENCE recursos_humanos.empleados_id_empleado_seq OWNER TO postgres;
 
 --
--- TOC entry 4626 (class 0 OID 0)
--- Dependencies: 240
+-- TOC entry 6010 (class 0 OID 0)
+-- Dependencies: 258
 -- Name: empleados_id_empleado_seq; Type: SEQUENCE OWNED BY; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -810,7 +640,7 @@ ALTER SEQUENCE recursos_humanos.empleados_id_empleado_seq OWNED BY recursos_huma
 
 
 --
--- TOC entry 241 (class 1259 OID 19850)
+-- TOC entry 259 (class 1259 OID 19425)
 -- Name: roles; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -824,7 +654,7 @@ CREATE TABLE recursos_humanos.roles (
 ALTER TABLE recursos_humanos.roles OWNER TO postgres;
 
 --
--- TOC entry 242 (class 1259 OID 19855)
+-- TOC entry 260 (class 1259 OID 19430)
 -- Name: roles_id_rol_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -840,8 +670,8 @@ CREATE SEQUENCE recursos_humanos.roles_id_rol_seq
 ALTER SEQUENCE recursos_humanos.roles_id_rol_seq OWNER TO postgres;
 
 --
--- TOC entry 4627 (class 0 OID 0)
--- Dependencies: 242
+-- TOC entry 6011 (class 0 OID 0)
+-- Dependencies: 260
 -- Name: roles_id_rol_seq; Type: SEQUENCE OWNED BY; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -849,7 +679,7 @@ ALTER SEQUENCE recursos_humanos.roles_id_rol_seq OWNED BY recursos_humanos.roles
 
 
 --
--- TOC entry 266 (class 1259 OID 24714)
+-- TOC entry 261 (class 1259 OID 19431)
 -- Name: solicitudes_permiso; Type: TABLE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -868,7 +698,7 @@ CREATE TABLE recursos_humanos.solicitudes_permiso (
 ALTER TABLE recursos_humanos.solicitudes_permiso OWNER TO postgres;
 
 --
--- TOC entry 265 (class 1259 OID 24713)
+-- TOC entry 262 (class 1259 OID 19436)
 -- Name: solicitudes_permiso_permiso_id_seq; Type: SEQUENCE; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -883,7 +713,7 @@ ALTER TABLE recursos_humanos.solicitudes_permiso ALTER COLUMN permiso_id ADD GEN
 
 
 --
--- TOC entry 243 (class 1259 OID 19856)
+-- TOC entry 263 (class 1259 OID 19437)
 -- Name: asistencias; Type: TABLE; Schema: sistemas; Owner: postgres
 --
 
@@ -901,7 +731,7 @@ CREATE TABLE sistemas.asistencias (
 ALTER TABLE sistemas.asistencias OWNER TO postgres;
 
 --
--- TOC entry 244 (class 1259 OID 19861)
+-- TOC entry 264 (class 1259 OID 19442)
 -- Name: asistencias_asistencia_id_seq; Type: SEQUENCE; Schema: sistemas; Owner: postgres
 --
 
@@ -917,8 +747,8 @@ CREATE SEQUENCE sistemas.asistencias_asistencia_id_seq
 ALTER SEQUENCE sistemas.asistencias_asistencia_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4628 (class 0 OID 0)
--- Dependencies: 244
+-- TOC entry 6012 (class 0 OID 0)
+-- Dependencies: 264
 -- Name: asistencias_asistencia_id_seq; Type: SEQUENCE OWNED BY; Schema: sistemas; Owner: postgres
 --
 
@@ -926,7 +756,7 @@ ALTER SEQUENCE sistemas.asistencias_asistencia_id_seq OWNED BY sistemas.asistenc
 
 
 --
--- TOC entry 245 (class 1259 OID 19862)
+-- TOC entry 265 (class 1259 OID 19443)
 -- Name: asignaciones_tareas; Type: TABLE; Schema: tareas; Owner: postgres
 --
 
@@ -941,7 +771,7 @@ CREATE TABLE tareas.asignaciones_tareas (
 ALTER TABLE tareas.asignaciones_tareas OWNER TO postgres;
 
 --
--- TOC entry 246 (class 1259 OID 19865)
+-- TOC entry 266 (class 1259 OID 19446)
 -- Name: asignaciones_tareas_asignacion_id_seq; Type: SEQUENCE; Schema: tareas; Owner: postgres
 --
 
@@ -957,8 +787,8 @@ CREATE SEQUENCE tareas.asignaciones_tareas_asignacion_id_seq
 ALTER SEQUENCE tareas.asignaciones_tareas_asignacion_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4629 (class 0 OID 0)
--- Dependencies: 246
+-- TOC entry 6013 (class 0 OID 0)
+-- Dependencies: 266
 -- Name: asignaciones_tareas_asignacion_id_seq; Type: SEQUENCE OWNED BY; Schema: tareas; Owner: postgres
 --
 
@@ -966,7 +796,7 @@ ALTER SEQUENCE tareas.asignaciones_tareas_asignacion_id_seq OWNED BY tareas.asig
 
 
 --
--- TOC entry 247 (class 1259 OID 19866)
+-- TOC entry 267 (class 1259 OID 19447)
 -- Name: tareas; Type: TABLE; Schema: tareas; Owner: postgres
 --
 
@@ -980,17 +810,14 @@ CREATE TABLE tareas.tareas (
     prioridad character varying(20),
     estado character varying(20),
     tiempo_restante_paralizado jsonb,
-    tiempo_pasado_paralizado jsonb,
-    tarea_padre integer,
-    complejidad integer,
-    puntos integer
+    tiempo_pasado_paralizado jsonb
 );
 
 
 ALTER TABLE tareas.tareas OWNER TO postgres;
 
 --
--- TOC entry 248 (class 1259 OID 19871)
+-- TOC entry 268 (class 1259 OID 19452)
 -- Name: tareas_tarea_id_seq; Type: SEQUENCE; Schema: tareas; Owner: postgres
 --
 
@@ -1006,8 +833,8 @@ CREATE SEQUENCE tareas.tareas_tarea_id_seq
 ALTER SEQUENCE tareas.tareas_tarea_id_seq OWNER TO postgres;
 
 --
--- TOC entry 4630 (class 0 OID 0)
--- Dependencies: 248
+-- TOC entry 6014 (class 0 OID 0)
+-- Dependencies: 268
 -- Name: tareas_tarea_id_seq; Type: SEQUENCE OWNED BY; Schema: tareas; Owner: postgres
 --
 
@@ -1015,7 +842,7 @@ ALTER SEQUENCE tareas.tareas_tarea_id_seq OWNED BY tareas.tareas.tarea_id;
 
 
 --
--- TOC entry 4283 (class 2604 OID 19872)
+-- TOC entry 5704 (class 2604 OID 19453)
 -- Name: evaluaciones_desempeño evaluacion_id; Type: DEFAULT; Schema: evaluaciones; Owner: postgres
 --
 
@@ -1023,7 +850,7 @@ ALTER TABLE ONLY evaluaciones."evaluaciones_desempeño" ALTER COLUMN evaluacion_
 
 
 --
--- TOC entry 4284 (class 2604 OID 19873)
+-- TOC entry 5705 (class 2604 OID 19454)
 -- Name: solicitudes_permiso permiso_id; Type: DEFAULT; Schema: permisos; Owner: postgres
 --
 
@@ -1031,7 +858,7 @@ ALTER TABLE ONLY permisos.solicitudes_permiso ALTER COLUMN permiso_id SET DEFAUL
 
 
 --
--- TOC entry 4285 (class 2604 OID 19874)
+-- TOC entry 5706 (class 2604 OID 19455)
 -- Name: costos costo_id; Type: DEFAULT; Schema: proyectos; Owner: postgres
 --
 
@@ -1039,39 +866,7 @@ ALTER TABLE ONLY proyectos.costos ALTER COLUMN costo_id SET DEFAULT nextval('pro
 
 
 --
--- TOC entry 4298 (class 2604 OID 24790)
--- Name: facturas id_factura; Type: DEFAULT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.facturas ALTER COLUMN id_factura SET DEFAULT nextval('proyectos.facturas_id_factura_seq'::regclass);
-
-
---
--- TOC entry 4296 (class 2604 OID 24771)
--- Name: ordenescompra id_orden; Type: DEFAULT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.ordenescompra ALTER COLUMN id_orden SET DEFAULT nextval('proyectos.ordenescompra_id_orden_seq'::regclass);
-
-
---
--- TOC entry 4300 (class 2604 OID 24806)
--- Name: pagos id_pago; Type: DEFAULT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.pagos ALTER COLUMN id_pago SET DEFAULT nextval('proyectos.pagos_id_pago_seq'::regclass);
-
-
---
--- TOC entry 4295 (class 2604 OID 24738)
--- Name: proveedores id_proveedor; Type: DEFAULT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.proveedores ALTER COLUMN id_proveedor SET DEFAULT nextval('proyectos.proveedores_id_proveedor_seq'::regclass);
-
-
---
--- TOC entry 4286 (class 2604 OID 19875)
+-- TOC entry 5707 (class 2604 OID 19456)
 -- Name: proyectos proyecto_id; Type: DEFAULT; Schema: proyectos; Owner: postgres
 --
 
@@ -1079,7 +874,7 @@ ALTER TABLE ONLY proyectos.proyectos ALTER COLUMN proyecto_id SET DEFAULT nextva
 
 
 --
--- TOC entry 4288 (class 2604 OID 19876)
+-- TOC entry 5709 (class 2604 OID 19457)
 -- Name: areas area_id; Type: DEFAULT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1087,7 +882,7 @@ ALTER TABLE ONLY recursos_humanos.areas ALTER COLUMN area_id SET DEFAULT nextval
 
 
 --
--- TOC entry 4289 (class 2604 OID 19877)
+-- TOC entry 5710 (class 2604 OID 19458)
 -- Name: empleados id_empleado; Type: DEFAULT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1095,7 +890,7 @@ ALTER TABLE ONLY recursos_humanos.empleados ALTER COLUMN id_empleado SET DEFAULT
 
 
 --
--- TOC entry 4291 (class 2604 OID 19878)
+-- TOC entry 5712 (class 2604 OID 19459)
 -- Name: roles id_rol; Type: DEFAULT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1103,7 +898,7 @@ ALTER TABLE ONLY recursos_humanos.roles ALTER COLUMN id_rol SET DEFAULT nextval(
 
 
 --
--- TOC entry 4292 (class 2604 OID 19879)
+-- TOC entry 5713 (class 2604 OID 19460)
 -- Name: asistencias asistencia_id; Type: DEFAULT; Schema: sistemas; Owner: postgres
 --
 
@@ -1111,7 +906,7 @@ ALTER TABLE ONLY sistemas.asistencias ALTER COLUMN asistencia_id SET DEFAULT nex
 
 
 --
--- TOC entry 4293 (class 2604 OID 19880)
+-- TOC entry 5714 (class 2604 OID 19461)
 -- Name: asignaciones_tareas asignacion_id; Type: DEFAULT; Schema: tareas; Owner: postgres
 --
 
@@ -1119,7 +914,7 @@ ALTER TABLE ONLY tareas.asignaciones_tareas ALTER COLUMN asignacion_id SET DEFAU
 
 
 --
--- TOC entry 4294 (class 2604 OID 19881)
+-- TOC entry 5715 (class 2604 OID 19462)
 -- Name: tareas tarea_id; Type: DEFAULT; Schema: tareas; Owner: postgres
 --
 
@@ -1127,7 +922,7 @@ ALTER TABLE ONLY tareas.tareas ALTER COLUMN tarea_id SET DEFAULT nextval('tareas
 
 
 --
--- TOC entry 4563 (class 0 OID 19814)
+-- TOC entry 5959 (class 0 OID 19344)
 -- Dependencies: 229
 -- Data for Name: evaluaciones_desempeño; Type: TABLE DATA; Schema: evaluaciones; Owner: postgres
 --
@@ -1137,7 +932,7 @@ COPY evaluaciones."evaluaciones_desempeño" (evaluacion_id, empleado_id, fecha_e
 
 
 --
--- TOC entry 4565 (class 0 OID 19820)
+-- TOC entry 5961 (class 0 OID 19350)
 -- Dependencies: 231
 -- Data for Name: solicitudes_permiso; Type: TABLE DATA; Schema: permisos; Owner: postgres
 --
@@ -1147,131 +942,27 @@ COPY permisos.solicitudes_permiso (permiso_id, empleado_id, tipo_permiso, fecha_
 
 
 --
--- TOC entry 4567 (class 0 OID 19826)
+-- TOC entry 5963 (class 0 OID 19356)
 -- Dependencies: 233
 -- Data for Name: costos; Type: TABLE DATA; Schema: proyectos; Owner: postgres
 --
 
-COPY proyectos.costos (costo_id, descripcion, monto, fecha, categoria, tipo, proyecto_id, proveedor_id) FROM stdin;
-2	Pago de servicios de consultoría	15000.75	2024-12-02	Servicios	Variable	2	3
-3	Adquisición de equipo de oficina	1200.40	2024-12-03	Equipos	Fijo	3	4
-4	Gastos en transporte y logística	3000.60	2024-12-04	Logística	Variable	4	5
-5	Pago de licencias de software	2500.00	2024-12-05	Tecnología	Fijo	5	6
-6	Costo de subcontratación de personal	8500.25	2024-12-06	Servicios	Variable	6	7
-7	Materiales de construcción para obra X	6400.90	2024-12-07	Materiales	Fijo	7	8
-8	Gastos operativos en proyecto Y	11200.35	2024-12-08	Operativos	Variable	8	9
-9	Pago de alquiler de equipos	5300.50	2024-12-09	Equipos	Fijo	9	10
-10	Costo de servicios profesionales externos	7700.60	2024-12-10	Servicios	Variable	10	1
-1	Costo de materiales para construcción	6000.00	2024-12-01	Materiales	Fijo	1	2
+COPY proyectos.costos (costo_id, descripcion, monto, fecha, categoria, tipo, proyecto_id) FROM stdin;
 \.
 
 
 --
--- TOC entry 4608 (class 0 OID 24787)
--- Dependencies: 274
--- Data for Name: facturas; Type: TABLE DATA; Schema: proyectos; Owner: postgres
---
-
-COPY proyectos.facturas (id_factura, id_orden, numero_factura, fecha_emision, monto, estado_pago) FROM stdin;
-22	4	FAC-2024-0004	2024-12-04	1800.25	Pagado
-23	5	FAC-2024-0005	2024-12-05	950.00	Pendiente
-24	6	FAC-2024-0006	2024-12-06	2200.40	Pagado
-25	7	FAC-2024-0007	2024-12-07	1700.60	Pendiente
-26	8	FAC-2024-0008	2024-12-08	1400.30	Pagado
-27	9	FAC-2024-0009	2024-12-09	2000.15	Pendiente
-21	3	FAC-2024-0003	2024-12-03	1300.00	Pendiente
-28	10	FAC-2024-0010	2024-12-10	1700.00	Pagado
-\.
-
-
---
--- TOC entry 4606 (class 0 OID 24768)
--- Dependencies: 272
--- Data for Name: ordenescompra; Type: TABLE DATA; Schema: proyectos; Owner: postgres
---
-
-COPY proyectos.ordenescompra (id_orden, id_proyecto, id_proveedor, monto, fecha, estado) FROM stdin;
-4	2	5	15000.75	2024-12-02	Completado
-5	3	4	7500.60	2024-12-03	Pendiente
-6	1	2	12000.40	2024-12-04	Completado
-7	4	6	3200.00	2024-12-05	Pendiente
-8	5	7	8500.25	2024-12-06	Completado
-9	3	1	6400.90	2024-12-07	Pendiente
-10	2	3	22000.35	2024-12-08	Completado
-11	6	8	11250.50	2024-12-09	Pendiente
-12	7	9	9800.60	2024-12-10	Completado
-3	1	3	5001.00	2024-12-01	Completado
-\.
-
-
---
--- TOC entry 4610 (class 0 OID 24803)
--- Dependencies: 276
--- Data for Name: pagos; Type: TABLE DATA; Schema: proyectos; Owner: postgres
---
-
-COPY proyectos.pagos (id_pago, id_factura, monto, fecha_pago, metodo_pago) FROM stdin;
-44	23	8500.25	2024-12-06	Efectivo
-45	24	6400.90	2024-12-07	Cheque
-46	25	22000.35	2024-12-08	Transferencia
-47	26	11250.50	2024-12-09	Tarjeta
-48	27	9800.60	2024-12-10	Efectivo
-42	21	1300.00	2024-12-04	Transferencia
-\.
-
-
---
--- TOC entry 4604 (class 0 OID 24735)
--- Dependencies: 270
--- Data for Name: proveedores; Type: TABLE DATA; Schema: proyectos; Owner: postgres
---
-
-COPY proyectos.proveedores (id_proveedor, nombre, direccion, telefono, correo) FROM stdin;
-1	Proveedor A	Calle Ficticia 123, Lima	987654321	contacto@proveedora.com
-2	Proveedor B	Avenida Siempre Viva 456, Lima	987654322	ventas@proveedorb.com
-3	Proveedor C	Jirón de la Unión 789, Lima	987654323	soporte@proveedorc.com
-4	Proveedor D	Calle Los Olivos 234, Lima	987654324	info@proveedord.com
-5	Proveedor E	Avenida Pardo 567, Lima	987654325	atencion@proveedore.com
-6	Proveedor F	Calle San Martín 890, Lima	987654326	servicios@proveedorf.com
-7	Proveedor G	Jirón Huancavelica 112, Lima	987654327	contacto@proveedorg.com
-8	Proveedor H	Avenida Grau 334, Lima	987654328	ventas@proveedorh.com
-9	Proveedor I	Calle de la Libertad 456, Lima	987654329	soporte@proveedori.com
-10	Proveedor J	Jirón Arequipa 678, Lima	987654330	informes@proveedorj.com
-11	Proveedor A	Calle Ficticia 123, Lima	987654321	contacto@proveedora.com
-12	Proveedor B	Avenida Siempre Viva 456, Lima	987654322	ventas@proveedorb.com
-13	Proveedor C	Jirón de la Unión 789, Lima	987654323	soporte@proveedorc.com
-14	Proveedor D	Calle Los Olivos 234, Lima	987654324	info@proveedord.com
-15	Proveedor E	Avenida Pardo 567, Lima	987654325	atencion@proveedore.com
-16	Proveedor F	Calle San Martín 890, Lima	987654326	servicios@proveedorf.com
-17	Proveedor G	Jirón Huancavelica 112, Lima	987654327	contacto@proveedorg.com
-18	Proveedor H	Avenida Grau 334, Lima	987654328	ventas@proveedorh.com
-19	Proveedor I	Calle de la Libertad 456, Lima	987654329	soporte@proveedori.com
-20	Proveedor J	Jirón Arequipa 678, Lima	987654330	informes@proveedorj.com
-\.
-
-
---
--- TOC entry 4569 (class 0 OID 19832)
+-- TOC entry 5965 (class 0 OID 19362)
 -- Dependencies: 235
 -- Data for Name: proyectos; Type: TABLE DATA; Schema: proyectos; Owner: postgres
 --
 
 COPY proyectos.proyectos (proyecto_id, nombre, descripcion, fecha_inicio, fecha_fin, estado, presupuesto, responsable_id) FROM stdin;
-2	Proyecto Beta	Desarrollo de una plataforma web para gestión empresarial.	2024-02-01	2024-08-30	Planificado	200000.00	2
-3	Proyecto Gamma	Investigación en IA para automatización de procesos.	2024-03-10	2024-12-01	En progreso	250000.00	3
-4	Proyecto Delta	Implementación de soluciones en la nube para almacenamiento seguro.	2024-04-20	2024-11-10	En progreso	100000.00	6
-5	Proyecto Epsilon	Rediseño de la red interna para mejorar la seguridad.	2024-05-05	2024-12-15	Pendiente	120000.00	6
-6	Proyecto Zeta	Desarrollo de un sistema de atención al cliente basado en IA.	2024-06-01	2025-05-01	En progreso	180000.00	9
-7	Proyecto Eta	Modernización de la infraestructura de TI en la empresa.	2024-07-10	2025-01-20	Planificado	220000.00	9
-8	Proyecto Theta	Implementación de una red de comunicación de alta velocidad.	2024-08-15	2024-12-25	En progreso	130000.00	9
-9	Proyecto Iota	Automatización de procesos administrativos mediante software personalizado.	2024-09-01	2025-02-28	Pendiente	140000.00	6
-10	Proyecto Kappa	Estudio y planificación de un nuevo centro de datos para la empresa.	2024-10-10	2025-05-10	Planificado	300000.00	3
-1	Proyecto Alpha	Este proyecto busca optimizar la infraestructura tecnológica.	2024-01-15	2024-06-15	En progreso	100000.00	1
 \.
 
 
 --
--- TOC entry 4282 (class 0 OID 19064)
+-- TOC entry 5703 (class 0 OID 18594)
 -- Dependencies: 225
 -- Data for Name: spatial_ref_sys; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1281,24 +972,24 @@ COPY public.spatial_ref_sys (srid, auth_name, auth_srid, srtext, proj4text) FROM
 
 
 --
--- TOC entry 4571 (class 0 OID 19839)
+-- TOC entry 5967 (class 0 OID 19369)
 -- Dependencies: 237
 -- Data for Name: areas; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
 COPY recursos_humanos.areas (area_id, nombre, supervisor_id, geom) FROM stdin;
+22	Marketing	3	\N
 23	Desarrollo	3	\N
 35	Talento Humano	3	\N
 37	Computación	3	\N
 38	Telecomunicacion	6	\N
 2	Recursos Humanos	1	0103000020E610000001000000050000000000000000000000000000000000000000000000000000000000000000002440000000000000244000000000000024400000000000002440000000000000000000000000000000000000000000000000
-22	Marketing	3	\N
 \.
 
 
 --
--- TOC entry 4588 (class 0 OID 24599)
--- Dependencies: 254
+-- TOC entry 5969 (class 0 OID 19375)
+-- Dependencies: 239
 -- Data for Name: auth_group; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1307,8 +998,8 @@ COPY recursos_humanos.auth_group (id, name) FROM stdin;
 
 
 --
--- TOC entry 4590 (class 0 OID 24607)
--- Dependencies: 256
+-- TOC entry 5971 (class 0 OID 19379)
+-- Dependencies: 241
 -- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1317,8 +1008,8 @@ COPY recursos_humanos.auth_group_permissions (id, group_id, permission_id) FROM 
 
 
 --
--- TOC entry 4586 (class 0 OID 24593)
--- Dependencies: 252
+-- TOC entry 5973 (class 0 OID 19383)
+-- Dependencies: 243
 -- Data for Name: auth_permission; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1327,8 +1018,8 @@ COPY recursos_humanos.auth_permission (id, name, content_type_id, codename) FROM
 
 
 --
--- TOC entry 4592 (class 0 OID 24613)
--- Dependencies: 258
+-- TOC entry 5975 (class 0 OID 19387)
+-- Dependencies: 245
 -- Data for Name: auth_user; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1337,8 +1028,8 @@ COPY recursos_humanos.auth_user (id, password, last_login, is_superuser, usernam
 
 
 --
--- TOC entry 4594 (class 0 OID 24621)
--- Dependencies: 260
+-- TOC entry 5976 (class 0 OID 19392)
+-- Dependencies: 246
 -- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1347,8 +1038,8 @@ COPY recursos_humanos.auth_user_groups (id, user_id, group_id) FROM stdin;
 
 
 --
--- TOC entry 4596 (class 0 OID 24627)
--- Dependencies: 262
+-- TOC entry 5979 (class 0 OID 19397)
+-- Dependencies: 249
 -- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1357,8 +1048,8 @@ COPY recursos_humanos.auth_user_user_permissions (id, user_id, permission_id) FR
 
 
 --
--- TOC entry 4598 (class 0 OID 24685)
--- Dependencies: 264
+-- TOC entry 5981 (class 0 OID 19401)
+-- Dependencies: 251
 -- Data for Name: django_admin_log; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1367,8 +1058,8 @@ COPY recursos_humanos.django_admin_log (id, action_time, object_id, object_repr,
 
 
 --
--- TOC entry 4584 (class 0 OID 24585)
--- Dependencies: 250
+-- TOC entry 5983 (class 0 OID 19408)
+-- Dependencies: 253
 -- Data for Name: django_content_type; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1377,8 +1068,8 @@ COPY recursos_humanos.django_content_type (id, app_label, model) FROM stdin;
 
 
 --
--- TOC entry 4602 (class 0 OID 24724)
--- Dependencies: 268
+-- TOC entry 5985 (class 0 OID 19412)
+-- Dependencies: 255
 -- Data for Name: django_migrations; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1387,8 +1078,8 @@ COPY recursos_humanos.django_migrations (id, app, name, applied) FROM stdin;
 
 
 --
--- TOC entry 4573 (class 0 OID 19843)
--- Dependencies: 239
+-- TOC entry 5987 (class 0 OID 19418)
+-- Dependencies: 257
 -- Data for Name: empleados; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1402,8 +1093,8 @@ COPY recursos_humanos.empleados (id_empleado, nombre, apellidos, correo, especia
 
 
 --
--- TOC entry 4575 (class 0 OID 19850)
--- Dependencies: 241
+-- TOC entry 5989 (class 0 OID 19425)
+-- Dependencies: 259
 -- Data for Name: roles; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1418,8 +1109,8 @@ COPY recursos_humanos.roles (id_rol, nombre, describcion) FROM stdin;
 
 
 --
--- TOC entry 4600 (class 0 OID 24714)
--- Dependencies: 266
+-- TOC entry 5991 (class 0 OID 19431)
+-- Dependencies: 261
 -- Data for Name: solicitudes_permiso; Type: TABLE DATA; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1428,8 +1119,8 @@ COPY recursos_humanos.solicitudes_permiso (permiso_id, empleado_id, tipo_permiso
 
 
 --
--- TOC entry 4577 (class 0 OID 19856)
--- Dependencies: 243
+-- TOC entry 5993 (class 0 OID 19437)
+-- Dependencies: 263
 -- Data for Name: asistencias; Type: TABLE DATA; Schema: sistemas; Owner: postgres
 --
 
@@ -1441,33 +1132,33 @@ COPY sistemas.asistencias (asistencia_id, empleado_id, fecha, hora_entrada, hora
 
 
 --
--- TOC entry 4579 (class 0 OID 19862)
--- Dependencies: 245
+-- TOC entry 5995 (class 0 OID 19443)
+-- Dependencies: 265
 -- Data for Name: asignaciones_tareas; Type: TABLE DATA; Schema: tareas; Owner: postgres
 --
 
 COPY tareas.asignaciones_tareas (asignacion_id, tarea_id, empleado_id, asignador_id) FROM stdin;
-77	121	\N	3
-79	120	2	3
-78	120	6	3
-80	121	6	3
 \.
 
 
 --
--- TOC entry 4581 (class 0 OID 19866)
--- Dependencies: 247
+-- TOC entry 5997 (class 0 OID 19447)
+-- Dependencies: 267
 -- Data for Name: tareas; Type: TABLE DATA; Schema: tareas; Owner: postgres
 --
 
-COPY tareas.tareas (tarea_id, titulo, descripcion, fecha_inicio, fecha_estimada_fin, fecha_real_fin, prioridad, estado, tiempo_restante_paralizado, tiempo_pasado_paralizado, tarea_padre, complejidad, puntos) FROM stdin;
-120	Prueba1	Prueba1	2024-12-03 17:08:06-05	2024-12-20 20:13:00-05	2024-12-03 17:10:42.347-05	Alta	Completada	\N	\N	\N	1	1
-121	Desarrollar Aplicativo de Mesa de Partes	Desarrollar Aplicativo de Mesa de Partes	2024-12-03 17:08:25-05	2024-12-04 19:00:00-05	2024-12-03 17:49:24.786-05	Alta	Completada	\N	\N	\N	1	1
+COPY tareas.tareas (tarea_id, titulo, descripcion, fecha_inicio, fecha_estimada_fin, fecha_real_fin, prioridad, estado, tiempo_restante_paralizado, tiempo_pasado_paralizado) FROM stdin;
+103	Prueba1	Prueba1	2024-12-02 12:02:03-05	2024-12-06 17:07:00-05	2024-12-02 12:02:30.106018-05	Alta	Completada	{"dias": 4, "horas": 5, "minutos": 4}	{"dias": 0, "horas": 0, "minutos": 0}
+105	Prueba3	Prueba3	2024-12-02 12:29:27-05	2024-12-01 12:29:00-05	2024-12-02 12:29:45.342483-05	Alta	Completada	{"dias": 0, "horas": 0, "minutos": 0}	{"dias": 1, "horas": 0, "minutos": 0}
+106	fsafsa	fsafsaf	2024-12-02 12:44:13-05	2024-12-03 14:47:00-05	\N	Media	Pendiente	\N	\N
+108	cxvcxv	xcvxcvcxv	2024-12-02 12:45:33-05	2024-12-05 14:47:00-05	\N	Alta	Pendiente	\N	\N
+104	Prueba2	Prueba2	2024-12-02 12:04:48-05	2024-12-05 16:09:00-05	\N	Media	En Progreso	\N	\N
+107	fbxcb	nxcvn	2024-12-02 12:44:24-05	2024-12-28 15:47:00-05	2024-12-02 12:51:36.204821-05	Alta	Completada	{"dias": 26, "horas": 2, "minutos": 55}	{"dias": 0, "horas": 0, "minutos": 0}
 \.
 
 
 --
--- TOC entry 4631 (class 0 OID 0)
+-- TOC entry 6015 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: evaluaciones_desempeño_evaluacion_id_seq; Type: SEQUENCE SET; Schema: evaluaciones; Owner: postgres
 --
@@ -1476,7 +1167,7 @@ SELECT pg_catalog.setval('evaluaciones."evaluaciones_desempeño_evaluacion_id_se
 
 
 --
--- TOC entry 4632 (class 0 OID 0)
+-- TOC entry 6016 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: solicitudes_permiso_permiso_id_seq; Type: SEQUENCE SET; Schema: permisos; Owner: postgres
 --
@@ -1485,61 +1176,25 @@ SELECT pg_catalog.setval('permisos.solicitudes_permiso_permiso_id_seq', 1, false
 
 
 --
--- TOC entry 4633 (class 0 OID 0)
+-- TOC entry 6017 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: costos_costo_id_seq; Type: SEQUENCE SET; Schema: proyectos; Owner: postgres
 --
 
-SELECT pg_catalog.setval('proyectos.costos_costo_id_seq', 10, true);
+SELECT pg_catalog.setval('proyectos.costos_costo_id_seq', 1, false);
 
 
 --
--- TOC entry 4634 (class 0 OID 0)
--- Dependencies: 273
--- Name: facturas_id_factura_seq; Type: SEQUENCE SET; Schema: proyectos; Owner: postgres
---
-
-SELECT pg_catalog.setval('proyectos.facturas_id_factura_seq', 28, true);
-
-
---
--- TOC entry 4635 (class 0 OID 0)
--- Dependencies: 271
--- Name: ordenescompra_id_orden_seq; Type: SEQUENCE SET; Schema: proyectos; Owner: postgres
---
-
-SELECT pg_catalog.setval('proyectos.ordenescompra_id_orden_seq', 12, true);
-
-
---
--- TOC entry 4636 (class 0 OID 0)
--- Dependencies: 275
--- Name: pagos_id_pago_seq; Type: SEQUENCE SET; Schema: proyectos; Owner: postgres
---
-
-SELECT pg_catalog.setval('proyectos.pagos_id_pago_seq', 48, true);
-
-
---
--- TOC entry 4637 (class 0 OID 0)
--- Dependencies: 269
--- Name: proveedores_id_proveedor_seq; Type: SEQUENCE SET; Schema: proyectos; Owner: postgres
---
-
-SELECT pg_catalog.setval('proyectos.proveedores_id_proveedor_seq', 20, true);
-
-
---
--- TOC entry 4638 (class 0 OID 0)
+-- TOC entry 6018 (class 0 OID 0)
 -- Dependencies: 236
 -- Name: proyectos_proyecto_id_seq; Type: SEQUENCE SET; Schema: proyectos; Owner: postgres
 --
 
-SELECT pg_catalog.setval('proyectos.proyectos_proyecto_id_seq', 10, true);
+SELECT pg_catalog.setval('proyectos.proyectos_proyecto_id_seq', 1, false);
 
 
 --
--- TOC entry 4639 (class 0 OID 0)
+-- TOC entry 6019 (class 0 OID 0)
 -- Dependencies: 238
 -- Name: areas_area_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
@@ -1548,8 +1203,8 @@ SELECT pg_catalog.setval('recursos_humanos.areas_area_id_seq', 38, true);
 
 
 --
--- TOC entry 4640 (class 0 OID 0)
--- Dependencies: 253
+-- TOC entry 6020 (class 0 OID 0)
+-- Dependencies: 240
 -- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1557,8 +1212,8 @@ SELECT pg_catalog.setval('recursos_humanos.auth_group_id_seq', 1, false);
 
 
 --
--- TOC entry 4641 (class 0 OID 0)
--- Dependencies: 255
+-- TOC entry 6021 (class 0 OID 0)
+-- Dependencies: 242
 -- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1566,8 +1221,8 @@ SELECT pg_catalog.setval('recursos_humanos.auth_group_permissions_id_seq', 1, fa
 
 
 --
--- TOC entry 4642 (class 0 OID 0)
--- Dependencies: 251
+-- TOC entry 6022 (class 0 OID 0)
+-- Dependencies: 244
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1575,8 +1230,8 @@ SELECT pg_catalog.setval('recursos_humanos.auth_permission_id_seq', 1, false);
 
 
 --
--- TOC entry 4643 (class 0 OID 0)
--- Dependencies: 259
+-- TOC entry 6023 (class 0 OID 0)
+-- Dependencies: 247
 -- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1584,8 +1239,8 @@ SELECT pg_catalog.setval('recursos_humanos.auth_user_groups_id_seq', 1, false);
 
 
 --
--- TOC entry 4644 (class 0 OID 0)
--- Dependencies: 257
+-- TOC entry 6024 (class 0 OID 0)
+-- Dependencies: 248
 -- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1593,8 +1248,8 @@ SELECT pg_catalog.setval('recursos_humanos.auth_user_id_seq', 1, false);
 
 
 --
--- TOC entry 4645 (class 0 OID 0)
--- Dependencies: 261
+-- TOC entry 6025 (class 0 OID 0)
+-- Dependencies: 250
 -- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1602,8 +1257,8 @@ SELECT pg_catalog.setval('recursos_humanos.auth_user_user_permissions_id_seq', 1
 
 
 --
--- TOC entry 4646 (class 0 OID 0)
--- Dependencies: 263
+-- TOC entry 6026 (class 0 OID 0)
+-- Dependencies: 252
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1611,8 +1266,8 @@ SELECT pg_catalog.setval('recursos_humanos.django_admin_log_id_seq', 1, false);
 
 
 --
--- TOC entry 4647 (class 0 OID 0)
--- Dependencies: 249
+-- TOC entry 6027 (class 0 OID 0)
+-- Dependencies: 254
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1620,8 +1275,8 @@ SELECT pg_catalog.setval('recursos_humanos.django_content_type_id_seq', 1, false
 
 
 --
--- TOC entry 4648 (class 0 OID 0)
--- Dependencies: 267
+-- TOC entry 6028 (class 0 OID 0)
+-- Dependencies: 256
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1629,8 +1284,8 @@ SELECT pg_catalog.setval('recursos_humanos.django_migrations_id_seq', 1, false);
 
 
 --
--- TOC entry 4649 (class 0 OID 0)
--- Dependencies: 240
+-- TOC entry 6029 (class 0 OID 0)
+-- Dependencies: 258
 -- Name: empleados_id_empleado_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1638,8 +1293,8 @@ SELECT pg_catalog.setval('recursos_humanos.empleados_id_empleado_seq', 13, true)
 
 
 --
--- TOC entry 4650 (class 0 OID 0)
--- Dependencies: 242
+-- TOC entry 6030 (class 0 OID 0)
+-- Dependencies: 260
 -- Name: roles_id_rol_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1647,8 +1302,8 @@ SELECT pg_catalog.setval('recursos_humanos.roles_id_rol_seq', 10, true);
 
 
 --
--- TOC entry 4651 (class 0 OID 0)
--- Dependencies: 265
+-- TOC entry 6031 (class 0 OID 0)
+-- Dependencies: 262
 -- Name: solicitudes_permiso_permiso_id_seq; Type: SEQUENCE SET; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1656,8 +1311,8 @@ SELECT pg_catalog.setval('recursos_humanos.solicitudes_permiso_permiso_id_seq', 
 
 
 --
--- TOC entry 4652 (class 0 OID 0)
--- Dependencies: 244
+-- TOC entry 6032 (class 0 OID 0)
+-- Dependencies: 264
 -- Name: asistencias_asistencia_id_seq; Type: SEQUENCE SET; Schema: sistemas; Owner: postgres
 --
 
@@ -1665,25 +1320,25 @@ SELECT pg_catalog.setval('sistemas.asistencias_asistencia_id_seq', 1, false);
 
 
 --
--- TOC entry 4653 (class 0 OID 0)
--- Dependencies: 246
+-- TOC entry 6033 (class 0 OID 0)
+-- Dependencies: 266
 -- Name: asignaciones_tareas_asignacion_id_seq; Type: SEQUENCE SET; Schema: tareas; Owner: postgres
 --
 
-SELECT pg_catalog.setval('tareas.asignaciones_tareas_asignacion_id_seq', 80, true);
+SELECT pg_catalog.setval('tareas.asignaciones_tareas_asignacion_id_seq', 69, true);
 
 
 --
--- TOC entry 4654 (class 0 OID 0)
--- Dependencies: 248
+-- TOC entry 6034 (class 0 OID 0)
+-- Dependencies: 268
 -- Name: tareas_tarea_id_seq; Type: SEQUENCE SET; Schema: tareas; Owner: postgres
 --
 
-SELECT pg_catalog.setval('tareas.tareas_tarea_id_seq', 121, true);
+SELECT pg_catalog.setval('tareas.tareas_tarea_id_seq', 108, true);
 
 
 --
--- TOC entry 4309 (class 2606 OID 19883)
+-- TOC entry 5721 (class 2606 OID 19464)
 -- Name: evaluaciones_desempeño evaluaciones_desempeño_pkey; Type: CONSTRAINT; Schema: evaluaciones; Owner: postgres
 --
 
@@ -1692,7 +1347,7 @@ ALTER TABLE ONLY evaluaciones."evaluaciones_desempeño"
 
 
 --
--- TOC entry 4311 (class 2606 OID 19885)
+-- TOC entry 5723 (class 2606 OID 19466)
 -- Name: solicitudes_permiso solicitudes_permiso_pkey; Type: CONSTRAINT; Schema: permisos; Owner: postgres
 --
 
@@ -1701,7 +1356,7 @@ ALTER TABLE ONLY permisos.solicitudes_permiso
 
 
 --
--- TOC entry 4313 (class 2606 OID 19887)
+-- TOC entry 5725 (class 2606 OID 19468)
 -- Name: costos costos_pkey; Type: CONSTRAINT; Schema: proyectos; Owner: postgres
 --
 
@@ -1710,52 +1365,7 @@ ALTER TABLE ONLY proyectos.costos
 
 
 --
--- TOC entry 4380 (class 2606 OID 24796)
--- Name: facturas facturas_numero_factura_key; Type: CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.facturas
-    ADD CONSTRAINT facturas_numero_factura_key UNIQUE (numero_factura);
-
-
---
--- TOC entry 4382 (class 2606 OID 24794)
--- Name: facturas facturas_pkey; Type: CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.facturas
-    ADD CONSTRAINT facturas_pkey PRIMARY KEY (id_factura);
-
-
---
--- TOC entry 4378 (class 2606 OID 24775)
--- Name: ordenescompra ordenescompra_pkey; Type: CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.ordenescompra
-    ADD CONSTRAINT ordenescompra_pkey PRIMARY KEY (id_orden);
-
-
---
--- TOC entry 4384 (class 2606 OID 24809)
--- Name: pagos pagos_pkey; Type: CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.pagos
-    ADD CONSTRAINT pagos_pkey PRIMARY KEY (id_pago);
-
-
---
--- TOC entry 4376 (class 2606 OID 24742)
--- Name: proveedores proveedores_pkey; Type: CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.proveedores
-    ADD CONSTRAINT proveedores_pkey PRIMARY KEY (id_proveedor);
-
-
---
--- TOC entry 4315 (class 2606 OID 19889)
+-- TOC entry 5727 (class 2606 OID 19470)
 -- Name: proyectos proyectos_pkey; Type: CONSTRAINT; Schema: proyectos; Owner: postgres
 --
 
@@ -1764,7 +1374,7 @@ ALTER TABLE ONLY proyectos.proyectos
 
 
 --
--- TOC entry 4317 (class 2606 OID 19891)
+-- TOC entry 5729 (class 2606 OID 19472)
 -- Name: areas areas_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1773,7 +1383,7 @@ ALTER TABLE ONLY recursos_humanos.areas
 
 
 --
--- TOC entry 4341 (class 2606 OID 24711)
+-- TOC entry 5732 (class 2606 OID 19474)
 -- Name: auth_group auth_group_name_key; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1782,7 +1392,7 @@ ALTER TABLE ONLY recursos_humanos.auth_group
 
 
 --
--- TOC entry 4346 (class 2606 OID 24642)
+-- TOC entry 5737 (class 2606 OID 19476)
 -- Name: auth_group_permissions auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1791,7 +1401,7 @@ ALTER TABLE ONLY recursos_humanos.auth_group_permissions
 
 
 --
--- TOC entry 4349 (class 2606 OID 24611)
+-- TOC entry 5740 (class 2606 OID 19478)
 -- Name: auth_group_permissions auth_group_permissions_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1800,7 +1410,7 @@ ALTER TABLE ONLY recursos_humanos.auth_group_permissions
 
 
 --
--- TOC entry 4343 (class 2606 OID 24603)
+-- TOC entry 5734 (class 2606 OID 19480)
 -- Name: auth_group auth_group_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1809,7 +1419,7 @@ ALTER TABLE ONLY recursos_humanos.auth_group
 
 
 --
--- TOC entry 4336 (class 2606 OID 24633)
+-- TOC entry 5743 (class 2606 OID 19482)
 -- Name: auth_permission auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1818,7 +1428,7 @@ ALTER TABLE ONLY recursos_humanos.auth_permission
 
 
 --
--- TOC entry 4338 (class 2606 OID 24597)
+-- TOC entry 5745 (class 2606 OID 19484)
 -- Name: auth_permission auth_permission_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1827,7 +1437,7 @@ ALTER TABLE ONLY recursos_humanos.auth_permission
 
 
 --
--- TOC entry 4357 (class 2606 OID 24625)
+-- TOC entry 5753 (class 2606 OID 19486)
 -- Name: auth_user_groups auth_user_groups_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1836,7 +1446,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user_groups
 
 
 --
--- TOC entry 4360 (class 2606 OID 24657)
+-- TOC entry 5756 (class 2606 OID 19488)
 -- Name: auth_user_groups auth_user_groups_user_id_group_id_94350c0c_uniq; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1845,7 +1455,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user_groups
 
 
 --
--- TOC entry 4351 (class 2606 OID 24617)
+-- TOC entry 5747 (class 2606 OID 19490)
 -- Name: auth_user auth_user_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1854,7 +1464,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user
 
 
 --
--- TOC entry 4363 (class 2606 OID 24631)
+-- TOC entry 5759 (class 2606 OID 19492)
 -- Name: auth_user_user_permissions auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1863,7 +1473,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user_user_permissions
 
 
 --
--- TOC entry 4366 (class 2606 OID 24671)
+-- TOC entry 5762 (class 2606 OID 19494)
 -- Name: auth_user_user_permissions auth_user_user_permissions_user_id_permission_id_14a6b632_uniq; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1872,7 +1482,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user_user_permissions
 
 
 --
--- TOC entry 4354 (class 2606 OID 24706)
+-- TOC entry 5750 (class 2606 OID 19496)
 -- Name: auth_user auth_user_username_key; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1881,7 +1491,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user
 
 
 --
--- TOC entry 4369 (class 2606 OID 24692)
+-- TOC entry 5765 (class 2606 OID 19498)
 -- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1890,7 +1500,7 @@ ALTER TABLE ONLY recursos_humanos.django_admin_log
 
 
 --
--- TOC entry 4331 (class 2606 OID 24591)
+-- TOC entry 5768 (class 2606 OID 19500)
 -- Name: django_content_type django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1899,7 +1509,7 @@ ALTER TABLE ONLY recursos_humanos.django_content_type
 
 
 --
--- TOC entry 4333 (class 2606 OID 24589)
+-- TOC entry 5770 (class 2606 OID 19502)
 -- Name: django_content_type django_content_type_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1908,7 +1518,7 @@ ALTER TABLE ONLY recursos_humanos.django_content_type
 
 
 --
--- TOC entry 4374 (class 2606 OID 24730)
+-- TOC entry 5772 (class 2606 OID 19504)
 -- Name: django_migrations django_migrations_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1917,7 +1527,7 @@ ALTER TABLE ONLY recursos_humanos.django_migrations
 
 
 --
--- TOC entry 4319 (class 2606 OID 19893)
+-- TOC entry 5774 (class 2606 OID 19506)
 -- Name: empleados empleados_correo_key; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1926,7 +1536,7 @@ ALTER TABLE ONLY recursos_humanos.empleados
 
 
 --
--- TOC entry 4321 (class 2606 OID 19895)
+-- TOC entry 5776 (class 2606 OID 19508)
 -- Name: empleados empleados_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1935,7 +1545,7 @@ ALTER TABLE ONLY recursos_humanos.empleados
 
 
 --
--- TOC entry 4323 (class 2606 OID 19897)
+-- TOC entry 5778 (class 2606 OID 19510)
 -- Name: roles roles_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1944,7 +1554,7 @@ ALTER TABLE ONLY recursos_humanos.roles
 
 
 --
--- TOC entry 4372 (class 2606 OID 24720)
+-- TOC entry 5780 (class 2606 OID 19512)
 -- Name: solicitudes_permiso solicitudes_permiso_pkey; Type: CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1953,7 +1563,7 @@ ALTER TABLE ONLY recursos_humanos.solicitudes_permiso
 
 
 --
--- TOC entry 4325 (class 2606 OID 19899)
+-- TOC entry 5782 (class 2606 OID 19514)
 -- Name: asistencias asistencias_pkey; Type: CONSTRAINT; Schema: sistemas; Owner: postgres
 --
 
@@ -1962,7 +1572,7 @@ ALTER TABLE ONLY sistemas.asistencias
 
 
 --
--- TOC entry 4327 (class 2606 OID 19901)
+-- TOC entry 5784 (class 2606 OID 19516)
 -- Name: asignaciones_tareas asignaciones_tareas_pkey; Type: CONSTRAINT; Schema: tareas; Owner: postgres
 --
 
@@ -1971,7 +1581,7 @@ ALTER TABLE ONLY tareas.asignaciones_tareas
 
 
 --
--- TOC entry 4329 (class 2606 OID 19903)
+-- TOC entry 5786 (class 2606 OID 19518)
 -- Name: tareas tareas_pkey; Type: CONSTRAINT; Schema: tareas; Owner: postgres
 --
 
@@ -1980,7 +1590,7 @@ ALTER TABLE ONLY tareas.tareas
 
 
 --
--- TOC entry 4339 (class 1259 OID 24712)
+-- TOC entry 5730 (class 1259 OID 19519)
 -- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1988,7 +1598,7 @@ CREATE INDEX auth_group_name_a6ea08ec_like ON recursos_humanos.auth_group USING 
 
 
 --
--- TOC entry 4344 (class 1259 OID 24653)
+-- TOC entry 5735 (class 1259 OID 19520)
 -- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -1996,7 +1606,7 @@ CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON recursos_humanos.auth_g
 
 
 --
--- TOC entry 4347 (class 1259 OID 24654)
+-- TOC entry 5738 (class 1259 OID 19521)
 -- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2004,7 +1614,7 @@ CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON recursos_humanos.a
 
 
 --
--- TOC entry 4334 (class 1259 OID 24639)
+-- TOC entry 5741 (class 1259 OID 19522)
 -- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2012,7 +1622,7 @@ CREATE INDEX auth_permission_content_type_id_2f476e4b ON recursos_humanos.auth_p
 
 
 --
--- TOC entry 4355 (class 1259 OID 24669)
+-- TOC entry 5751 (class 1259 OID 19523)
 -- Name: auth_user_groups_group_id_97559544; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2020,7 +1630,7 @@ CREATE INDEX auth_user_groups_group_id_97559544 ON recursos_humanos.auth_user_gr
 
 
 --
--- TOC entry 4358 (class 1259 OID 24668)
+-- TOC entry 5754 (class 1259 OID 19524)
 -- Name: auth_user_groups_user_id_6a12ed8b; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2028,7 +1638,7 @@ CREATE INDEX auth_user_groups_user_id_6a12ed8b ON recursos_humanos.auth_user_gro
 
 
 --
--- TOC entry 4361 (class 1259 OID 24683)
+-- TOC entry 5757 (class 1259 OID 19525)
 -- Name: auth_user_user_permissions_permission_id_1fbb5f2c; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2036,7 +1646,7 @@ CREATE INDEX auth_user_user_permissions_permission_id_1fbb5f2c ON recursos_human
 
 
 --
--- TOC entry 4364 (class 1259 OID 24682)
+-- TOC entry 5760 (class 1259 OID 19526)
 -- Name: auth_user_user_permissions_user_id_a95ead1b; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2044,7 +1654,7 @@ CREATE INDEX auth_user_user_permissions_user_id_a95ead1b ON recursos_humanos.aut
 
 
 --
--- TOC entry 4352 (class 1259 OID 24707)
+-- TOC entry 5748 (class 1259 OID 19527)
 -- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2052,7 +1662,7 @@ CREATE INDEX auth_user_username_6821ab7c_like ON recursos_humanos.auth_user USIN
 
 
 --
--- TOC entry 4367 (class 1259 OID 24703)
+-- TOC entry 5763 (class 1259 OID 19528)
 -- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2060,7 +1670,7 @@ CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON recursos_humanos.djang
 
 
 --
--- TOC entry 4370 (class 1259 OID 24704)
+-- TOC entry 5766 (class 1259 OID 19529)
 -- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2068,7 +1678,7 @@ CREATE INDEX django_admin_log_user_id_c564eba6 ON recursos_humanos.django_admin_
 
 
 --
--- TOC entry 4385 (class 2606 OID 19904)
+-- TOC entry 5787 (class 2606 OID 19530)
 -- Name: evaluaciones_desempeño evaluaciones_desempeño_empleado_id_fkey; Type: FK CONSTRAINT; Schema: evaluaciones; Owner: postgres
 --
 
@@ -2077,7 +1687,7 @@ ALTER TABLE ONLY evaluaciones."evaluaciones_desempeño"
 
 
 --
--- TOC entry 4386 (class 2606 OID 19909)
+-- TOC entry 5788 (class 2606 OID 19535)
 -- Name: evaluaciones_desempeño evaluaciones_desempeño_evaluador_id_fkey; Type: FK CONSTRAINT; Schema: evaluaciones; Owner: postgres
 --
 
@@ -2086,7 +1696,7 @@ ALTER TABLE ONLY evaluaciones."evaluaciones_desempeño"
 
 
 --
--- TOC entry 4387 (class 2606 OID 19914)
+-- TOC entry 5789 (class 2606 OID 19540)
 -- Name: solicitudes_permiso solicitudes_permiso_aprobado_por_fkey; Type: FK CONSTRAINT; Schema: permisos; Owner: postgres
 --
 
@@ -2095,7 +1705,7 @@ ALTER TABLE ONLY permisos.solicitudes_permiso
 
 
 --
--- TOC entry 4388 (class 2606 OID 19919)
+-- TOC entry 5790 (class 2606 OID 19545)
 -- Name: solicitudes_permiso solicitudes_permiso_empleado_id_fkey; Type: FK CONSTRAINT; Schema: permisos; Owner: postgres
 --
 
@@ -2104,25 +1714,7 @@ ALTER TABLE ONLY permisos.solicitudes_permiso
 
 
 --
--- TOC entry 4389 (class 2606 OID 24744)
--- Name: costos costos_proveedor_id_fkey; Type: FK CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.costos
-    ADD CONSTRAINT costos_proveedor_id_fkey FOREIGN KEY (proveedor_id) REFERENCES proyectos.proveedores(id_proveedor);
-
-
---
--- TOC entry 4411 (class 2606 OID 24797)
--- Name: facturas facturas_id_orden_fkey; Type: FK CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.facturas
-    ADD CONSTRAINT facturas_id_orden_fkey FOREIGN KEY (id_orden) REFERENCES proyectos.ordenescompra(id_orden) ON DELETE CASCADE;
-
-
---
--- TOC entry 4390 (class 2606 OID 19924)
+-- TOC entry 5791 (class 2606 OID 19550)
 -- Name: costos fk_proyecto; Type: FK CONSTRAINT; Schema: proyectos; Owner: postgres
 --
 
@@ -2131,7 +1723,7 @@ ALTER TABLE ONLY proyectos.costos
 
 
 --
--- TOC entry 4391 (class 2606 OID 19929)
+-- TOC entry 5792 (class 2606 OID 19555)
 -- Name: proyectos fk_responsable; Type: FK CONSTRAINT; Schema: proyectos; Owner: postgres
 --
 
@@ -2140,34 +1732,7 @@ ALTER TABLE ONLY proyectos.proyectos
 
 
 --
--- TOC entry 4409 (class 2606 OID 24781)
--- Name: ordenescompra ordenescompra_id_proveedor_fkey; Type: FK CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.ordenescompra
-    ADD CONSTRAINT ordenescompra_id_proveedor_fkey FOREIGN KEY (id_proveedor) REFERENCES proyectos.proveedores(id_proveedor) ON DELETE CASCADE;
-
-
---
--- TOC entry 4410 (class 2606 OID 24776)
--- Name: ordenescompra ordenescompra_id_proyecto_fkey; Type: FK CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.ordenescompra
-    ADD CONSTRAINT ordenescompra_id_proyecto_fkey FOREIGN KEY (id_proyecto) REFERENCES proyectos.proyectos(proyecto_id) ON DELETE CASCADE;
-
-
---
--- TOC entry 4412 (class 2606 OID 24810)
--- Name: pagos pagos_id_factura_fkey; Type: FK CONSTRAINT; Schema: proyectos; Owner: postgres
---
-
-ALTER TABLE ONLY proyectos.pagos
-    ADD CONSTRAINT pagos_id_factura_fkey FOREIGN KEY (id_factura) REFERENCES proyectos.facturas(id_factura) ON DELETE CASCADE;
-
-
---
--- TOC entry 4392 (class 2606 OID 19934)
+-- TOC entry 5793 (class 2606 OID 19560)
 -- Name: areas areas_supervisor_id_fkey; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2176,7 +1741,7 @@ ALTER TABLE ONLY recursos_humanos.areas
 
 
 --
--- TOC entry 4401 (class 2606 OID 24648)
+-- TOC entry 5794 (class 2606 OID 19565)
 -- Name: auth_group_permissions auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2185,7 +1750,7 @@ ALTER TABLE ONLY recursos_humanos.auth_group_permissions
 
 
 --
--- TOC entry 4402 (class 2606 OID 24643)
+-- TOC entry 5795 (class 2606 OID 19570)
 -- Name: auth_group_permissions auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2194,7 +1759,7 @@ ALTER TABLE ONLY recursos_humanos.auth_group_permissions
 
 
 --
--- TOC entry 4400 (class 2606 OID 24634)
+-- TOC entry 5796 (class 2606 OID 19575)
 -- Name: auth_permission auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2203,7 +1768,7 @@ ALTER TABLE ONLY recursos_humanos.auth_permission
 
 
 --
--- TOC entry 4403 (class 2606 OID 24663)
+-- TOC entry 5797 (class 2606 OID 19580)
 -- Name: auth_user_groups auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2212,7 +1777,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user_groups
 
 
 --
--- TOC entry 4404 (class 2606 OID 24658)
+-- TOC entry 5798 (class 2606 OID 19585)
 -- Name: auth_user_groups auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2221,7 +1786,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user_groups
 
 
 --
--- TOC entry 4405 (class 2606 OID 24677)
+-- TOC entry 5799 (class 2606 OID 19590)
 -- Name: auth_user_user_permissions auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2230,7 +1795,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user_user_permissions
 
 
 --
--- TOC entry 4406 (class 2606 OID 24672)
+-- TOC entry 5800 (class 2606 OID 19595)
 -- Name: auth_user_user_permissions auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2239,7 +1804,7 @@ ALTER TABLE ONLY recursos_humanos.auth_user_user_permissions
 
 
 --
--- TOC entry 4407 (class 2606 OID 24693)
+-- TOC entry 5801 (class 2606 OID 19600)
 -- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2248,7 +1813,7 @@ ALTER TABLE ONLY recursos_humanos.django_admin_log
 
 
 --
--- TOC entry 4408 (class 2606 OID 24698)
+-- TOC entry 5802 (class 2606 OID 19605)
 -- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2257,7 +1822,7 @@ ALTER TABLE ONLY recursos_humanos.django_admin_log
 
 
 --
--- TOC entry 4393 (class 2606 OID 19939)
+-- TOC entry 5803 (class 2606 OID 19610)
 -- Name: empleados fk_area_id; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2266,7 +1831,7 @@ ALTER TABLE ONLY recursos_humanos.empleados
 
 
 --
--- TOC entry 4394 (class 2606 OID 19944)
+-- TOC entry 5804 (class 2606 OID 19615)
 -- Name: empleados fk_rol_id; Type: FK CONSTRAINT; Schema: recursos_humanos; Owner: postgres
 --
 
@@ -2275,7 +1840,7 @@ ALTER TABLE ONLY recursos_humanos.empleados
 
 
 --
--- TOC entry 4395 (class 2606 OID 19949)
+-- TOC entry 5805 (class 2606 OID 19620)
 -- Name: asistencias asistencias_empleado_id_fkey; Type: FK CONSTRAINT; Schema: sistemas; Owner: postgres
 --
 
@@ -2284,7 +1849,7 @@ ALTER TABLE ONLY sistemas.asistencias
 
 
 --
--- TOC entry 4396 (class 2606 OID 19954)
+-- TOC entry 5806 (class 2606 OID 19625)
 -- Name: asignaciones_tareas asignaciones_tareas_asignador_id_fkey; Type: FK CONSTRAINT; Schema: tareas; Owner: postgres
 --
 
@@ -2293,7 +1858,7 @@ ALTER TABLE ONLY tareas.asignaciones_tareas
 
 
 --
--- TOC entry 4397 (class 2606 OID 19959)
+-- TOC entry 5807 (class 2606 OID 19630)
 -- Name: asignaciones_tareas asignaciones_tareas_empleado_id_fkey; Type: FK CONSTRAINT; Schema: tareas; Owner: postgres
 --
 
@@ -2302,7 +1867,7 @@ ALTER TABLE ONLY tareas.asignaciones_tareas
 
 
 --
--- TOC entry 4398 (class 2606 OID 19964)
+-- TOC entry 5808 (class 2606 OID 19635)
 -- Name: asignaciones_tareas asignaciones_tareas_tarea_id_fkey; Type: FK CONSTRAINT; Schema: tareas; Owner: postgres
 --
 
@@ -2310,16 +1875,7 @@ ALTER TABLE ONLY tareas.asignaciones_tareas
     ADD CONSTRAINT asignaciones_tareas_tarea_id_fkey FOREIGN KEY (tarea_id) REFERENCES tareas.tareas(tarea_id) ON DELETE CASCADE;
 
 
---
--- TOC entry 4399 (class 2606 OID 32926)
--- Name: tareas fk_tarea_padre; Type: FK CONSTRAINT; Schema: tareas; Owner: postgres
---
-
-ALTER TABLE ONLY tareas.tareas
-    ADD CONSTRAINT fk_tarea_padre FOREIGN KEY (tarea_padre) REFERENCES tareas.tareas(tarea_id) ON DELETE CASCADE;
-
-
--- Completed on 2024-12-04 15:07:19 -05
+-- Completed on 2024-12-17 18:21:14
 
 --
 -- PostgreSQL database dump complete
