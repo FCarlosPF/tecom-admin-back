@@ -1,5 +1,6 @@
 from django.db import models
 from recursos_humanos.models import Empleados
+from proyectos.models import Proyectos
 # Create your models here.
 class Tareas(models.Model):
     tarea_id = models.AutoField(primary_key=True)
@@ -24,6 +25,7 @@ class Tareas(models.Model):
         db_column='tarea_padre'  # Este será el nombre en la base de datos
 
     )
+    proyecto = models.ForeignKey(Proyectos, models.DO_NOTHING, blank=True, null=True, related_name='tareas')
 
     class Meta:
         managed = True

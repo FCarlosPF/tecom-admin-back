@@ -1,6 +1,7 @@
 from django.db import models
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.gis.db import models
+from django.contrib.postgres.fields import ArrayField
 
 class Areas(models.Model):
     area_id = models.AutoField(primary_key=True)
@@ -77,8 +78,25 @@ class VistaEmpleadosTareas(models.Model):
     area_id = models.IntegerField(blank=True, null=True)
     rol_id = models.IntegerField(blank=True, null=True)
     geom = models.GeometryField(blank=True, null=True)
+    proyectos_ids = ArrayField(models.IntegerField(), blank=True, null=True)  # Array de proyectos únicos
     cantidad_tareas_pendientes_o_en_progreso = models.IntegerField()
 
     class Meta:
-        managed = False  # No queremos que Django intente crear esta tabla
+        managed = False  # No permitir a Django gestionar esta tabla
         db_table = '"recursos_humanos"."vista_empleados_tareas"'
+
+class EmpleadosTareasPendientes(models.Model):
+    id_empleado = models.IntegerField(primary_key=True)
+    nombre = models.CharField(max_length=255)
+    apellidos = models.CharField(max_length=255)
+    correo = models.EmailField()
+    tarea_id = models.IntegerField()
+    tarea_titulo = models.CharField(max_length=255)
+    tarea_descripcion = models.TextField()
+    tarea_fecha_inicio = models.DateTimeField()
+    tarea_fecha_estimada_fin = models.DateTimeField()
+    tarea_estado = models.CharField(max_length=50)
+
+    class Meta:
+        managed = False  # No permitir a Django gestionar esta tabla
+        db_table = '"recursos_humanos"."empleados_tareas_pendientes"'
