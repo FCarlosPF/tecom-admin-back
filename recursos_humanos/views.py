@@ -2,37 +2,32 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from .serializers import EmpleadosTareasPendientesSerializer,VistaEmpleadosTareasSerializer, LoginSerializer, EmpleadoSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
+from .serializers import ChangePasswordSerializer, EmpleadosTareasPendientesSerializer,VistaEmpleadosTareasSerializer, LoginSerializer, EmpleadoSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
 from .models import Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas, EmpleadosTareasPendientes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import JsonResponse
 from rest_framework import viewsets
                                                                                                                                  
 class LoginView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        empleado = serializer.validated_data
+        empleado = serializer.validated_data['empleado']
 
-        # Generar los tokens usando el método get_tokens del modelo
-        tokens = empleado.get_tokens()
+        try:
+            # Generar los tokens usando el método get_tokens del modelo
+            tokens = empleado.get_tokens()
+        except Exception as e:
+            return Response(
+                {"detail": "Error generando los tokens.", "error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
         # Serializar la información del empleado
-        empleado_data = {
-            "id_empleado": empleado.id_empleado,
-            "nombre": empleado.nombre,
-            "apellidos": empleado.apellidos,
-            "correo": empleado.correo,
-            "especialidad": empleado.especialidad,
-            "sueldo": empleado.sueldo,
-            "activo": empleado.activo,
-            "foto": empleado.foto,
-            "nombre_usuario": empleado.nombre_usuario,
-            "fecha_contratacion": empleado.fecha_contratacion,
-            "area": empleado.area.area_id if empleado.area else None,
-            "rol": empleado.rol.id_rol if empleado.rol else None,
-        }
+        empleado_data = EmpleadoSerializer(empleado).data
 
         response_data = {
             "tokens": tokens,
@@ -94,3 +89,42 @@ class EmpleadosTareasPendientesListView(generics.ListAPIView):
     def get_queryset(self):
         id_empleado = self.kwargs['id_empleado']
         return EmpleadosTareasPendientes.objects.filter(id_empleado=id_empleado)
+    
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def post(self, request):
+        # Buscar al empleado relacionado
+        try:
+            empleado = Empleados.objects.get(correo=request.user.email)
+        except Empleados.DoesNotExist:
+            return Response(
+                {"detail": "No se encontró al empleado relacionado con este usuario."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Validar los datos enviados
+        serializer = ChangePasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            old_password = serializer.validated_data['old_password']
+            new_password = serializer.validated_data['new_password']
+
+            # Verificar la contraseña actual
+            if not empleado.check_password(old_password):
+                return Response(
+                    {"old_password": "Contraseña incorrecta."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Actualizar la contraseña
+            empleado.set_password(new_password)
+            empleado.save()
+            return Response(
+                {"detail": "Contraseña cambiada exitosamente."},
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

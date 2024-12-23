@@ -2,6 +2,7 @@ from django.db import models
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.hashers import make_password, check_password
 
 class Areas(models.Model):
     area_id = models.AutoField(primary_key=True)
@@ -54,6 +55,12 @@ class Empleados(models.Model):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }
+    
+    def set_password(self, raw_password):
+        self.contrasenia = make_password(raw_password)
+
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.contrasenia)
     
 class Oficina(models.Model):
     nombre = models.CharField(max_length=50, blank=True, null=True)

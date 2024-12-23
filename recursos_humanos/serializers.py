@@ -11,9 +11,14 @@ class EmpleadosSerializer(serializers.ModelSerializer):
         extra_kwargs = {'contrasenia': {'write_only': True}}
         geo_field = "geom"
 
+from django.contrib.auth.hashers import check_password
+from rest_framework import serializers
+from .models import Empleados
+
 class LoginSerializer(serializers.Serializer):
     nombre_usuario = serializers.CharField()
     contrasenia = serializers.CharField()
+    empleado = EmpleadosSerializer(read_only=True)
 
     def validate(self, data):
         nombre_usuario = data.get('nombre_usuario')
@@ -24,11 +29,12 @@ class LoginSerializer(serializers.Serializer):
         except Empleados.DoesNotExist:
             raise serializers.ValidationError("Usuario no encontrado.")
 
-        # Verificar la contraseña
-        if contrasenia != empleado.contrasenia:
+        # Verificar la contraseña usando check_password
+        if not check_password(contrasenia, empleado.contrasenia):
             raise serializers.ValidationError("Contraseña incorrecta.")
 
-        return empleado        
+        data['empleado'] = empleado
+        return data
     
     
 class EmpleadoSerializer(serializers.ModelSerializer):
@@ -85,3 +91,6 @@ class EmpleadosTareasPendientesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)

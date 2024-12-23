@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import EmpleadosTareasPendientesListView, VistaEmpleadosTareasListView, LoginView, EmpleadoListCreateView, EmpleadoRetrieveUpdateDestroyView, healthcheck, AreasListCreateView, RolesListCreateView, RolesRetrieveUpdateDestroyView, AreasRetrieveUpdateDestroyView, OficinaViewSet
+from .views import ChangePasswordView,EmpleadosTareasPendientesListView, VistaEmpleadosTareasListView, LoginView, EmpleadoListCreateView, EmpleadoRetrieveUpdateDestroyView, healthcheck, AreasListCreateView, RolesListCreateView, RolesRetrieveUpdateDestroyView, AreasRetrieveUpdateDestroyView, OficinaViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -17,6 +17,7 @@ urlpatterns = [
     path('roles/<int:pk>/', RolesRetrieveUpdateDestroyView.as_view(), name='roles-retrieve-update-destroy'),
     path('vista-empleados-tareas/', VistaEmpleadosTareasListView.as_view(), name='vista-empleados-tareas-list'),
     path('tareas-pendientes/<int:id_empleado>/', EmpleadosTareasPendientesListView.as_view(), name='tareas-pendientes'),
+    path('change-password/', ChangePasswordView.as_view(), name='change-password'),
 
     path('', include(router.urls)),
 
