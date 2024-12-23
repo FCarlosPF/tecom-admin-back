@@ -32,9 +32,20 @@ class LoginSerializer(serializers.Serializer):
     
     
 class EmpleadoSerializer(serializers.ModelSerializer):
+    area = serializers.SerializerMethodField()
+
     class Meta:
         model = Empleados
-        fields = '__all__'    
+        fields = '__all__'
+
+    def get_area(self, obj):
+        if obj.area:
+            return {
+                'area_id': obj.area.area_id,
+                'nombre': obj.area.nombre,
+                'supervisor_id': obj.area.supervisor_id
+            }
+        return None   
 
 class AreasReadSerializer(serializers.ModelSerializer):
     supervisor = EmpleadoSerializer()

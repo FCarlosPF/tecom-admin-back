@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from .models import Asistencias,Notificaciones
 from .serializers import AsistenciasSerializer,NotificacionesSerializer
 from recursos_humanos.models import Empleados
+from rest_framework.decorators import action
 
 class AsistenciasViewSet(viewsets.ModelViewSet):
     queryset = Asistencias.objects.all()
@@ -34,3 +35,13 @@ class AsistenciasViewSet(viewsets.ModelViewSet):
 class NotificacionesViewSet(viewsets.ModelViewSet):
     queryset = Notificaciones.objects.all()
     serializer_class = NotificacionesSerializer
+
+    @action(detail=True, methods=['post'])
+    def enviar(self, request, pk=None):
+        notificacion = self.get_object()
+        area_id = request.data.get('area_id')
+        rol_id = request.data.get('rol_id')
+        empleados_ids = request.data.get('empleados_ids', [])
+
+        notificacion.enviar_notificacion(area_id=area_id, rol_id=rol_id, empleados_ids=empleados_ids)
+        return Response({'status': 'Notificaciones enviadas'}, status=status.HTTP_200_OK)

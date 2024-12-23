@@ -18,16 +18,16 @@ class AsistenciasSerializer(serializers.ModelSerializer):
         ]
 
 class NotificacionesSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Notificaciones
         fields = [
-            'notificacion_id',
-            'empleado_id',
-            'tipo_notificacion',
-            'mensaje',
-            'fecha_notificacion',
-            'hora_inicio',
-            'hora_fin',
-            'creada_en',
-            'leida'
+            'id_notificacion',
+            'titulo',
+            'descripcion',
+            'fecha_creacion',
+            'fecha_evento',
+            'tipo',
+            'estado',
+            'para'
         ]
