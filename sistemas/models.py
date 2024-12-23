@@ -88,3 +88,19 @@ class NotificacionesDestinatarios(models.Model):
     class Meta:
         managed = False
         db_table = '"sistemas"."notificaciones_destinatarios"'
+
+class VistaNotificacionesEmpleados(models.Model):
+    id_empleado = models.IntegerField(primary_key=True)
+    nombre_empleado = models.CharField(max_length=255)
+    apellido_empleado = models.CharField(max_length=255)
+    id_notificacion = models.IntegerField()
+    titulo_notificacion = models.CharField(max_length=255)
+    descripcion_notificacion = models.TextField()
+    fecha_creacion = models.DateTimeField()
+    fecha_evento = models.DateTimeField()
+    tipo_notificacion = models.CharField(max_length=50)
+    estado_notificacion = models.CharField(max_length=20)
+
+    class Meta:
+        managed = False
+        db_table = '"sistemas"."vista_notificaciones_empleados"'

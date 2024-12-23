@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Asistencias,Notificaciones
+from .models import Asistencias,Notificaciones, VistaNotificacionesEmpleados
 from recursos_humanos.serializers import EmpleadoSerializer
 
 class AsistenciasSerializer(serializers.ModelSerializer):
@@ -30,4 +30,21 @@ class NotificacionesSerializer(serializers.ModelSerializer):
             'tipo',
             'estado',
             'para'
+        ]
+
+
+class VistaNotificacionesEmpleadosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VistaNotificacionesEmpleados
+        fields = [
+            'id_empleado',
+            'nombre_empleado',
+            'apellido_empleado',
+            'id_notificacion',
+            'titulo_notificacion',
+            'descripcion_notificacion',
+            'fecha_creacion',
+            'fecha_evento',
+            'tipo_notificacion',
+            'estado_notificacion'
         ]

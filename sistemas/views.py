@@ -1,7 +1,7 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.response import Response
-from .models import Asistencias,Notificaciones
-from .serializers import AsistenciasSerializer,NotificacionesSerializer
+from .models import Asistencias,Notificaciones, VistaNotificacionesEmpleados
+from .serializers import AsistenciasSerializer,NotificacionesSerializer, VistaNotificacionesEmpleadosSerializer
 from recursos_humanos.models import Empleados
 from rest_framework.decorators import action
 
@@ -45,3 +45,11 @@ class NotificacionesViewSet(viewsets.ModelViewSet):
 
         notificacion.enviar_notificacion(area_id=area_id, rol_id=rol_id, empleados_ids=empleados_ids)
         return Response({'status': 'Notificaciones enviadas'}, status=status.HTTP_200_OK)
+    
+
+class NotificacionesPorEmpleadoView(generics.ListAPIView):
+    serializer_class = VistaNotificacionesEmpleadosSerializer
+
+    def get_queryset(self):
+        id_empleado = self.kwargs['id_empleado']
+        return VistaNotificacionesEmpleados.objects.filter(id_empleado=id_empleado)

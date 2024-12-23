@@ -83,3 +83,5 @@ class EmpleadosTareasPendientesSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmpleadosTareasPendientes
         fields = '__all__'
+
+
