@@ -3,6 +3,12 @@ from .models import EmpleadosTareasPendientes, Empleados, Areas, Roles, Oficina,
 from django.contrib.auth.hashers import check_password
 from rest_framework import generics
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+from django.contrib.auth.models import User
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from django.contrib.auth.hashers import check_password
+from rest_framework import serializers
+from .models import Empleados
 
 class EmpleadosSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,34 +17,43 @@ class EmpleadosSerializer(serializers.ModelSerializer):
         extra_kwargs = {'contrasenia': {'write_only': True}}
         geo_field = "geom"
 
-from django.contrib.auth.hashers import check_password
-from rest_framework import serializers
-from .models import Empleados
-
 class LoginSerializer(serializers.Serializer):
-    nombre_usuario = serializers.CharField()
-    contrasenia = serializers.CharField()
+    username = serializers.CharField()
+    password = serializers.CharField()
     empleado = EmpleadosSerializer(read_only=True)
 
     def validate(self, data):
-        nombre_usuario = data.get('nombre_usuario')
-        contrasenia = data.get('contrasenia')
+        username = data.get('username')
+        password = data.get('password')
 
         try:
-            empleado = Empleados.objects.get(nombre_usuario=nombre_usuario)
-        except Empleados.DoesNotExist:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
             raise serializers.ValidationError("Usuario no encontrado.")
 
         # Verificar la contraseña usando check_password
-        if not check_password(contrasenia, empleado.contrasenia):
+        if not user.check_password(password):
             raise serializers.ValidationError("Contraseña incorrecta.")
 
+        try:
+            empleado = Empleados.objects.get(user=user)
+        except Empleados.DoesNotExist:
+            raise serializers.ValidationError("Empleado no encontrado.")
+
         data['empleado'] = empleado
+        data['user'] = user  # Asegúrate de incluir esto
         return data
-    
-    
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password']
+        extra_kwargs = {'password': {'write_only': True, 'required': False}}
+
 class EmpleadoSerializer(serializers.ModelSerializer):
     area = serializers.SerializerMethodField()
+    user = UserSerializer()
 
     class Meta:
         model = Empleados
@@ -51,7 +66,31 @@ class EmpleadoSerializer(serializers.ModelSerializer):
                 'nombre': obj.area.nombre,
                 'supervisor_id': obj.area.supervisor_id
             }
-        return None   
+        return None
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        password = user_data.pop('password', None)
+        user = User.objects.create(**user_data)
+        if password:
+            user.set_password(password)
+            user.save()
+        empleado = Empleados.objects.create(user=user, **validated_data)
+        return empleado
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', None)
+        if user_data:
+            user = instance.user
+            for attr, value in user_data.items():
+                if attr == 'username' and User.objects.filter(username=value).exclude(pk=user.pk).exists():
+                    raise serializers.ValidationError({"username": "A user with that username already exists."})
+                if attr == 'password':
+                    user.set_password(value)
+                else:
+                    setattr(user, attr, value)
+            user.save()
+        return super().update(instance, validated_data)
 
 class AreasReadSerializer(serializers.ModelSerializer):
     supervisor = EmpleadoSerializer()

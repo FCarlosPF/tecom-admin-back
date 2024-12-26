@@ -1,6 +1,7 @@
 from django.urls import path, include
 from .views import ChangePasswordView,EmpleadosTareasPendientesListView, VistaEmpleadosTareasListView, LoginView, EmpleadoListCreateView, EmpleadoRetrieveUpdateDestroyView, healthcheck, AreasListCreateView, RolesListCreateView, RolesRetrieveUpdateDestroyView, AreasRetrieveUpdateDestroyView, OficinaViewSet
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenRefreshView
 
 router = DefaultRouter()
 router.register(r'oficinas', OficinaViewSet)

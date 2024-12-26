@@ -8,23 +8,24 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.http import JsonResponse
 from rest_framework import viewsets
-                                                                                                                                 
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenRefreshView
+
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
         empleado = serializer.validated_data['empleado']
 
-        try:
-            # Generar los tokens usando el método get_tokens del modelo
-            tokens = empleado.get_tokens()
-        except Exception as e:
-            return Response(
-                {"detail": "Error generando los tokens.", "error": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+        # Generar los tokens usando el modelo User
+        refresh = RefreshToken.for_user(user)
+        tokens = {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
 
         # Serializar la información del empleado
         empleado_data = EmpleadoSerializer(empleado).data
@@ -35,15 +36,15 @@ class LoginView(APIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
-        
-
 
 class EmpleadoListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista
     queryset = Empleados.objects.all()
     serializer_class = EmpleadoSerializer
 
 
 class EmpleadoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista
     queryset = Empleados.objects.all()
     serializer_class = EmpleadoSerializer
     lookup_field = 'id_empleado'
@@ -52,6 +53,7 @@ def healthcheck(request):
     return JsonResponse({"status": "ok"})    
 
 class AreasListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista
     queryset = Areas.objects.all()
 
     def get_serializer_class(self):
@@ -60,14 +62,20 @@ class AreasListCreateView(generics.ListCreateAPIView):
         return AreasReadSerializer
 
 class RolesListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista
+   
     queryset = Roles.objects.all()
     serializer_class = RolesSerializer
 
 class RolesRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista
+
     queryset = Roles.objects.all()
     serializer_class = RolesSerializer      
 
 class AreasRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista
+
     queryset = Areas.objects.all()
 
     def get_serializer_class(self):
@@ -76,6 +84,7 @@ class AreasRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         return AreasReadSerializer    
     
 class OficinaViewSet(viewsets.ModelViewSet):
+    
     queryset = Oficina.objects.all()
     serializer_class = OficinaSerializer
 
@@ -89,8 +98,6 @@ class EmpleadosTareasPendientesListView(generics.ListAPIView):
     def get_queryset(self):
         id_empleado = self.kwargs['id_empleado']
         return EmpleadosTareasPendientes.objects.filter(id_empleado=id_empleado)
-    
-
 
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
