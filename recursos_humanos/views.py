@@ -44,8 +44,8 @@ class EmpleadoListCreateView(generics.ListCreateAPIView):
 
 
 class EmpleadoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista
-    queryset = Empleados.objects.all()
+    permission_classes = [IsAuthenticated]
+    queryset = Empleados.objects.select_related('area', 'rol', 'user').all()
     serializer_class = EmpleadoSerializer
     lookup_field = 'id_empleado'
     

@@ -1,6 +1,6 @@
 from rest_framework import generics
-from .models import Tareas, AsignacionesTareas,VistaEmpleadosTareas
-from .serializers import TareasSerializer, AsignacionesTareasReadSerializer,AsignacionesTareasCreateSerializer,AsignacionesTareasUpdateSerializer
+from .models import Tareas, AsignacionesTareas,VistaEmpleadosTareas,ObservacionTarea
+from .serializers import ObservacionTareaSerializer,TareasSerializer, AsignacionesTareasReadSerializer,AsignacionesTareasCreateSerializer,AsignacionesTareasUpdateSerializer
 from rest_framework.views import APIView
 from .services import calcular_metricas_por_empleado
 from rest_framework.response import Response
@@ -10,6 +10,8 @@ from openpyxl.styles import Font, Alignment, PatternFill, Border,Side
 from django.db.models import F
 from django.utils import timezone
 from datetime import timedelta
+from rest_framework import viewsets
+
 # Vistas para Tareas
 class TareasListCreateView(generics.ListCreateAPIView):
     queryset = Tareas.objects.all()
@@ -185,7 +187,7 @@ class ReporteTareasNoEntregadasUltimoMesView(APIView):
             ws.append([
                 tarea.id_empleado, tarea.nombre_empleado, tarea.apellido_empleado, tarea.tarea_id,
                 tarea.titulo_tarea, tarea.descripcion_tarea, remove_tzinfo(tarea.fecha_inicio),
-                remove_tzinfo(tarea.fecha_estimada_fin), remove_tzinfo(tarea.fecha_real_fin), tarea.estado_tarea
+                    (tarea.fecha_estimada_fin), remove_tzinfo(tarea.fecha_real_fin), tarea.estado_tarea
             ])
 
         # Ajustar el ancho de las columnas
@@ -206,3 +208,8 @@ class ReporteTareasNoEntregadasUltimoMesView(APIView):
         response['Content-Disposition'] = 'attachment; filename=reporte_tareas.xlsx'
         wb.save(response)
         return response
+    
+
+class ObservacionTareaViewSet(viewsets.ModelViewSet):
+    queryset = ObservacionTarea.objects.all()
+    serializer_class = ObservacionTareaSerializer

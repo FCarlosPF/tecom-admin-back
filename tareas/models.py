@@ -56,3 +56,14 @@ class VistaEmpleadosTareas(models.Model):
     class Meta:
         managed = False  # No permitir a Django gestionar esta tabla
         db_table = '"tareas"."vista_empleados_tareas"'
+
+class ObservacionTarea(models.Model):
+    observacion_id = models.AutoField(primary_key=True)  # Especificar la clave primaria
+    tarea = models.ForeignKey('tareas.Tareas', on_delete=models.CASCADE, db_column='tarea_id', related_name="observaciones")
+    empleado = models.ForeignKey('recursos_humanos.Empleados', on_delete=models.SET_NULL, null=True, db_column='empleado_id')
+    fecha = models.DateTimeField(auto_now_add=True)
+    observacion = models.TextField()
+
+    class Meta:
+        managed = False  # No permitir a Django gestionar esta tabla
+        db_table = '"tareas"."observaciones_tareas"'

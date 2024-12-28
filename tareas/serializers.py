@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Tareas, AsignacionesTareas
+from .models import Tareas, AsignacionesTareas, ObservacionTarea
 from django.utils.timezone import now, make_aware
 from datetime import datetime
 from django.utils import timezone
@@ -112,3 +112,9 @@ class AsignacionesTareasUpdateSerializer(serializers.ModelSerializer):
         tarea.save()
 
         return instance
+
+
+class ObservacionTareaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ObservacionTarea
+        fields = '__all__'
