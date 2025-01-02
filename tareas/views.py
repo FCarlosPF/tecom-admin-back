@@ -187,7 +187,7 @@ class ReporteTareasNoEntregadasUltimoMesView(APIView):
             ws.append([
                 tarea.id_empleado, tarea.nombre_empleado, tarea.apellido_empleado, tarea.tarea_id,
                 tarea.titulo_tarea, tarea.descripcion_tarea, remove_tzinfo(tarea.fecha_inicio),
-                    (tarea.fecha_estimada_fin), remove_tzinfo(tarea.fecha_real_fin), tarea.estado_tarea
+                remove_tzinfo(tarea.fecha_estimada_fin), remove_tzinfo(tarea.fecha_real_fin), tarea.estado_tarea
             ])
 
         # Ajustar el ancho de las columnas
