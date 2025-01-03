@@ -96,6 +96,7 @@ class AreasReadSerializer(serializers.ModelSerializer):
     supervisor = EmpleadoSerializer()
 
     class Meta:
+        geo_field = "geom"
         model = Areas
         fields = '__all__'
 
@@ -131,5 +132,11 @@ class EmpleadosTareasPendientesSerializer(serializers.ModelSerializer):
 
 
 class ChangePasswordSerializer(serializers.Serializer):
-    old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
+    contraseña_antigua = serializers.CharField(required=True, label="Contraseña antigua")
+    nueva_contraseña = serializers.CharField(required=True, label="Nueva contraseña")
+    repetir_nueva_contraseña = serializers.CharField(required=True, label="Repetir nueva contraseña")
+
+    def validate(self, data):
+        if data['nueva_contraseña'] != data['repetir_nueva_contraseña']:
+            raise serializers.ValidationError({"repetir_nueva_contraseña": "Las contraseñas no coinciden."})
+        return data

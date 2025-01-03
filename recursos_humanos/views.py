@@ -10,6 +10,7 @@ from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
+from django.db import IntegrityError
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -83,6 +84,22 @@ class AreasRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
             return AreasWriteSerializer
         return AreasReadSerializer    
     
+    def delete(self, request, *args, **kwargs):
+        area = self.get_object()
+        empleados_referenciados = Empleados.objects.filter(area_id=area.area_id)
+        
+        # Actualizar empleados para que ya no referencien el área
+        empleados_referenciados.update(area_id=None)
+        
+        try:
+            return super().delete(request, *args, **kwargs)
+        except IntegrityError:
+            return Response(
+                {"detail": "No se puede eliminar el área porque está referenciada por empleados."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+
 class OficinaViewSet(viewsets.ModelViewSet):
     
     queryset = Oficina.objects.all()
@@ -116,18 +133,18 @@ class ChangePasswordView(APIView):
         # Validar los datos enviados
         serializer = ChangePasswordSerializer(data=request.data)
         if serializer.is_valid():
-            old_password = serializer.validated_data['old_password']
-            new_password = serializer.validated_data['new_password']
+            contraseña_antigua = serializer.validated_data['contraseña_antigua']
+            nueva_contraseña = serializer.validated_data['nueva_contraseña']
 
             # Verificar la contraseña actual
-            if not empleado.check_password(old_password):
+            if not empleado.check_password(contraseña_antigua):
                 return Response(
-                    {"old_password": "Contraseña incorrecta."},
+                    {"contraseña_antigua": "Contraseña incorrecta."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
             # Actualizar la contraseña
-            empleado.set_password(new_password)
+            empleado.set_password(nueva_contraseña)
             empleado.save()
             return Response(
                 {"detail": "Contraseña cambiada exitosamente."},

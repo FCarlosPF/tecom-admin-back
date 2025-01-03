@@ -50,114 +50,20 @@ class MetricasPorEmpleadoView(APIView):
         metricas = calcular_metricas_por_empleado(empleado_id)
         return Response(metricas)
     
-
-class ReporteTareasExcelView(APIView):
-    def get(self, request, *args, **kwargs):
-        # Crear un libro de trabajo y hojas
-        wb = openpyxl.Workbook()
-        ws_pendientes = wb.create_sheet(title="Pendientes")
-        ws_en_progreso = wb.create_sheet(title="En Progreso")
-        ws_completadas = wb.create_sheet(title="Completadas")
-
-        # Eliminar la hoja por defecto
-        wb.remove(wb['Sheet'])
-
-        # Definir los encabezados
-        headers = ["ID", "Título", "Descripción", "Fecha Inicio", "Fecha Estimada Fin", "Fecha Real Fin", "Prioridad", "Estado"]
-
-        # Función para estilizar celdas
-        def aplicar_estilos_hoja(ws):
-            # Agregar los encabezados
-            ws.append(headers)
-            ws.row_dimensions[1].height = 35  # Ajustar la altura de la fila 1
-            for cell in ws[1]:
-                cell.font = Font(name='Arial Black', size=9, bold=True, color="FFFFFF")
-                cell.fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
-                cell.alignment = Alignment(horizontal='center', vertical='center')  # Centrar y alinear al centro
-                cell.border = Border(
-                    left=Side(border_style="thin", color="000000"),
-                    right=Side(border_style="thin", color="000000"),
-                    top=Side(border_style="thin", color="000000"),
-                    bottom=Side(border_style="thin", color="000000")
-                )
-            # Ajustar texto automáticamente
-            for column in ws.columns:
-                for cell in column:
-                    cell.alignment = Alignment(wrap_text=True)
-
-        # Aplicar estilos iniciales
-        for ws in [ws_pendientes, ws_en_progreso, ws_completadas]:
-            aplicar_estilos_hoja(ws)
-
-        # Función para eliminar la información de zona horaria
-        def remove_tzinfo(dt):
-            if dt is not None and dt.tzinfo is not None:
-                return dt.replace(tzinfo=None)
-            return dt
-
-        # Obtener las tareas y agregarlas a las hojas correspondientes
-        tareas_pendientes = Tareas.objects.filter(estado="Pendiente")
-        tareas_en_progreso = Tareas.objects.filter(estado="En Progreso")
-        tareas_completadas = Tareas.objects.filter(estado="Completada")
-
-        def agregar_tareas(ws, tareas):
-            for idx, tarea in enumerate(tareas, start=1):
-                ws.append([
-                    tarea.tarea_id, tarea.titulo, tarea.descripcion, remove_tzinfo(tarea.fecha_inicio),
-                    remove_tzinfo(tarea.fecha_estimada_fin), remove_tzinfo(tarea.fecha_real_fin), tarea.prioridad, tarea.estado
-                ])
-                # Estilo para las filas
-                for cell in ws[idx + 1]:  # idx + 1 para ignorar encabezados
-                    cell.border = Border(
-                        left=Side(border_style="thin", color="000000"),
-                        right=Side(border_style="thin", color="000000"),
-                        top=Side(border_style="thin", color="000000"),
-                        bottom=Side(border_style="thin", color="000000")
-                    )
-                    if idx % 2 == 0:  # Colorear filas alternas
-                        cell.fill = PatternFill(start_color="D9E1F2", end_color="D9E1F2", fill_type="solid")
-
-        agregar_tareas(ws_pendientes, tareas_pendientes)
-        agregar_tareas(ws_en_progreso, tareas_en_progreso)
-        agregar_tareas(ws_completadas, tareas_completadas)
-
-        # Ajustar el ancho de las columnas
-        for ws in [ws_pendientes, ws_en_progreso, ws_completadas]:
-            for column in ws.columns:
-                max_length = 0
-                column = list(column)
-                for cell in column:
-                    try:
-                        if cell.value:
-                            max_length = max(max_length, len(str(cell.value)))
-                    except:
-                        pass
-                adjusted_width = (max_length + 2)
-                ws.column_dimensions[column[0].column_letter].width = adjusted_width
-
-        # Crear una respuesta HTTP con el archivo Excel
-        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=reporte_tareas.xlsx'
-        wb.save(response)
-        return response
-    
 class ReporteTareasNoEntregadasUltimoMesView(APIView):
     def get(self, request, *args, **kwargs):
-        # Obtener la fecha actual y la fecha de hace un mes
+        # Obtener la fecha actual
         fecha_actual = timezone.now()
-        fecha_hace_un_mes = fecha_actual - timedelta(days=30)
 
-        # Filtrar las tareas que no se entregaron a tiempo en el último mes
-        tareas_no_entregadas_a_tiempo = VistaEmpleadosTareas.objects.filter(
-            fecha_real_fin__gt=F('fecha_estimada_fin'),
-            fecha_estimada_fin__gte=fecha_hace_un_mes,
-            fecha_estimada_fin__lte=fecha_actual
+        # Filtrar las tareas que ya están vencidas
+        tareas_vencidas = VistaEmpleadosTareas.objects.filter(
+            fecha_estimada_fin__lt=fecha_actual
         )
 
         # Crear un libro de trabajo y hoja
         wb = openpyxl.Workbook()
         ws = wb.active
-        ws.title = "Tareas No Entregadas"
+        ws.title = "Tareas Vencidas"
 
         # Definir los encabezados
         headers = ["ID Empleado", "Nombre Empleado", "Apellido Empleado", "ID Tarea", "Título Tarea", "Descripción Tarea", "Fecha Inicio", "Fecha Estimada Fin", "Fecha Real Fin", "Estado Tarea"]
@@ -183,7 +89,7 @@ class ReporteTareasNoEntregadasUltimoMesView(APIView):
             return dt
 
         # Agregar las tareas a la hoja
-        for tarea in tareas_no_entregadas_a_tiempo:
+        for tarea in tareas_vencidas:
             ws.append([
                 tarea.id_empleado, tarea.nombre_empleado, tarea.apellido_empleado, tarea.tarea_id,
                 tarea.titulo_tarea, tarea.descripcion_tarea, remove_tzinfo(tarea.fecha_inicio),
@@ -205,11 +111,79 @@ class ReporteTareasNoEntregadasUltimoMesView(APIView):
 
         # Crear una respuesta HTTP con el archivo Excel
         response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-        response['Content-Disposition'] = 'attachment; filename=reporte_tareas.xlsx'
+        response['Content-Disposition'] = 'attachment; filename=reporte_tareas_vencidas.xlsx'
         wb.save(response)
         return response
-    
+
+class ReporteTareasPendientesEnProgresoView(APIView):
+    def get(self, request, *args, **kwargs):
+        # Filtrar las tareas que están en estado "Pendiente" o "En Progreso"
+        tareas_pendientes_en_progreso = VistaEmpleadosTareas.objects.filter(
+            estado_tarea__in=["Pendiente", "En Progreso"]
+        )
+
+        # Crear un libro de trabajo y hoja
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Tareas Pendientes o En Progreso"
+
+        # Definir los encabezados
+        headers = ["ID Empleado", "Nombre Empleado", "Apellido Empleado", "ID Tarea", "Título Tarea", "Descripción Tarea", "Fecha Inicio", "Fecha Estimada Fin", "Fecha Real Fin", "Estado Tarea"]
+
+        # Agregar los encabezados
+        ws.append(headers)
+        ws.row_dimensions[1].height = 35  # Ajustar la altura de la fila 1
+        for cell in ws[1]:
+            cell.font = Font(name='Arial Black', size=9, bold=True, color="FFFFFF")
+            cell.fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")
+            cell.alignment = Alignment(horizontal='center', vertical='center')  # Centrar y alinear al centro
+            cell.border = Border(
+                left=Side(border_style="thin", color="000000"),
+                right=Side(border_style="thin", color="000000"),
+                top=Side(border_style="thin", color="000000"),
+                bottom=Side(border_style="thin", color="000000")
+            )
+
+        # Función para eliminar la información de zona horaria
+        def remove_tzinfo(dt):
+            if dt is not None and dt.tzinfo is not None:
+                return dt.replace(tzinfo=None)
+            return dt
+
+        # Agregar las tareas a la hoja
+        for tarea in tareas_pendientes_en_progreso:
+            ws.append([
+                tarea.id_empleado, tarea.nombre_empleado, tarea.apellido_empleado, tarea.tarea_id,
+                tarea.titulo_tarea, tarea.descripcion_tarea, remove_tzinfo(tarea.fecha_inicio),
+                remove_tzinfo(tarea.fecha_estimada_fin), remove_tzinfo(tarea.fecha_real_fin), tarea.estado_tarea
+            ])
+
+        # Ajustar el ancho de las columnas
+        for column in ws.columns:
+            max_length = 0
+            column = list(column)
+            for cell in column:
+                try:
+                    if cell.value:
+                        max_length = max(max_length, len(str(cell.value)))
+                except:
+                    pass
+            adjusted_width = (max_length + 2)
+            ws.column_dimensions[column[0].column_letter].width = adjusted_width
+
+        # Crear una respuesta HTTP con el archivo Excel
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=reporte_tareas_pendientes_en_progreso.xlsx'
+        wb.save(response)
+        return response
 
 class ObservacionTareaViewSet(viewsets.ModelViewSet):
     queryset = ObservacionTarea.objects.all()
     serializer_class = ObservacionTareaSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        tarea_id = self.request.query_params.get('tarea_id', None)
+        if tarea_id is not None:
+            queryset = queryset.filter(tarea_id=tarea_id)
+        return queryset

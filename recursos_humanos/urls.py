@@ -19,7 +19,6 @@ urlpatterns = [
     path('vista-empleados-tareas/', VistaEmpleadosTareasListView.as_view(), name='vista-empleados-tareas-list'),
     path('tareas-pendientes/<int:id_empleado>/', EmpleadosTareasPendientesListView.as_view(), name='tareas-pendientes'),
     path('change-password/', ChangePasswordView.as_view(), name='change-password'),
-
     path('', include(router.urls)),
 
 ]

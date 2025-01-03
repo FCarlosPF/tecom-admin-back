@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import ObservacionTareaViewSet,ReporteTareasNoEntregadasUltimoMesView,TareasListCreateView, TareasRetrieveUpdateDestroyView, AsignacionesTareasListCreateView, AsignacionesTareasRetrieveUpdateDestroyView,TareasPorEmpleadoView,MetricasPorEmpleadoView
+from .views import ReporteTareasPendientesEnProgresoView,ObservacionTareaViewSet,ReporteTareasNoEntregadasUltimoMesView,TareasListCreateView, TareasRetrieveUpdateDestroyView, AsignacionesTareasListCreateView, AsignacionesTareasRetrieveUpdateDestroyView,TareasPorEmpleadoView,MetricasPorEmpleadoView
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -13,6 +13,7 @@ urlpatterns = [
     path('tareas/empleado/<int:empleado_id>/', TareasPorEmpleadoView.as_view(), name='tareas-por-empleado'),
     path('metricas-empleado/<int:empleado_id>/', MetricasPorEmpleadoView.as_view(), name='metricas-empleado'),
     path('reporte-tareas-no-entregadas-a-tiempo/', ReporteTareasNoEntregadasUltimoMesView.as_view(), name='reporte-tareas-no-entregadas-a-tiempo'),
+    path('reporte-tareas-pendiente-en-progreso/', ReporteTareasPendientesEnProgresoView.as_view(), name='reporte-tareas-no-entregadas-a-tiempo'),
     path('', include(router.urls)),
 
 ]

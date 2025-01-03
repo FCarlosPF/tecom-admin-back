@@ -10,6 +10,7 @@ class Areas(models.Model):
     area_id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
     supervisor = models.ForeignKey('Empleados', models.DO_NOTHING, blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True)
 
     class Meta:
         db_table = '"recursos_humanos"."areas"'
