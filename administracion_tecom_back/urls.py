@@ -16,6 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import render
+from django.conf import settings
+from django.http import HttpResponse
+import os
+from django.conf.urls.static import static
+
+def index(request):
+    with open(os.path.join(settings.BASE_DIR, 'templates/.next/server/app/index.html'), 'r') as f:
+        return HttpResponse(f.read())
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,5 +32,6 @@ urlpatterns = [
     path('api/', include('tareas.urls')),  # Incluye las URLs de tu aplicación
     path('api/', include('sistemas.urls')),  # Incluye las URLs de tu aplicación
     path('api/', include('proyectos.urls')),  # Incluye las URLs de tu aplicación
+    path('', index, name='index'),  # Sirve la aplicación React como la raíz
 
-]
+]+ static(settings.STATIC_URL, document_root=os.path.join(settings.BASE_DIR, 'templates/.next/static'))
