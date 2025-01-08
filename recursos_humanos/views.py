@@ -11,6 +11,7 @@ from rest_framework import viewsets
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.db import IntegrityError
+from django.views.generic import TemplateView
 
 class LoginView(APIView):
     permission_classes = [AllowAny]
@@ -37,6 +38,15 @@ class LoginView(APIView):
         }
 
         return Response(response_data, status=status.HTTP_200_OK)
+
+
+class Index(TemplateView):
+    methods = ['get']
+    template_name = "recursos_humanos/index.html"
+
+class Panel(TemplateView):
+    methods = ['get']
+    template_name = "recursos_humanos/panel.html"
 
 class EmpleadoListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista

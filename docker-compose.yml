@@ -1,34 +1,42 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_DB: ${DATABASE_NAME}
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: unless-stopped
-
-  web:
-    build: .
+  frontend:
+    build:
+      context: ../tecom_admin_front
+      dockerfile: Dockerfile-front-admin
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - tecom_admin_back_tecom_network
+  frontend-visor:
+    build:
+      context: ../tecom_admin_visor
+      dockerfile: Dockerfile-front-visor
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+    networks:
+      - tecom_admin_back_tecom_network
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile-back
     command: >
       sh -c "gunicorn --bind 0.0.0.0:8000 administracion_tecom_back.wsgi:application"
     volumes:
       - .:/app
     ports:
       - "8000:8000"
-    depends_on:
-      - db
     env_file:
       - .env
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/healthcheck"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+    networks:
+      - tecom_admin_back_tecom_network
 
-volumes:
-  postgres_data:
+networks:
+  tecom_admin_back_tecom_network:
+    external: true

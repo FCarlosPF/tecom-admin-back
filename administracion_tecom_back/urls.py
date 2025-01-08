@@ -21,10 +21,8 @@ from django.conf import settings
 from django.http import HttpResponse
 import os
 from django.conf.urls.static import static
+from recursos_humanos.views import Index,Panel
 
-def index(request):
-    with open(os.path.join(settings.BASE_DIR, 'templates/.next/server/app/index.html'), 'r') as f:
-        return HttpResponse(f.read())
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +30,7 @@ urlpatterns = [
     path('api/', include('tareas.urls')),  # Incluye las URLs de tu aplicación
     path('api/', include('sistemas.urls')),  # Incluye las URLs de tu aplicación
     path('api/', include('proyectos.urls')),  # Incluye las URLs de tu aplicación
-    path('', index, name='index'),  # Sirve la aplicación React como la raíz
+    path('', Index.as_view(), name='index'),  # Sirve la aplicación React como la raíz
+    path('panel/', Panel.as_view(), name='panel'),  # Sirve la aplicación React como la raíz
 
 ]+ static(settings.STATIC_URL, document_root=os.path.join(settings.BASE_DIR, 'templates/.next/static'))

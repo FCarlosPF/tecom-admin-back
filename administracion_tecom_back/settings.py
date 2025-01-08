@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-#o3#o*2jdqb!b6bu%8+hsd80x#b=t_v-101nh!!e1&p4ko29aj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -98,7 +98,9 @@ ROOT_URLCONF = 'administracion_tecom_back.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates')  # Ajusta esta ruta según tu estructura de directorios
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -112,11 +114,7 @@ TEMPLATES = [
 ]
 
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://localhost:3001",
-    # Puedes añadir más orígenes si es necesario
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 WSGI_APPLICATION = 'administracion_tecom_back.wsgi.application'
 
@@ -126,14 +124,14 @@ WSGI_APPLICATION = 'administracion_tecom_back.wsgi.application'
 if os.getenv('DOCKERIZED') == 'true':
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
             'NAME': os.getenv('DATABASE_NAME'),
             'USER': os.getenv('DATABASE_USER'),
             'PASSWORD': os.getenv('DATABASE_PASSWORD'),
             'HOST': os.getenv('DATABASE_HOST'),
             'PORT': os.getenv('DATABASE_PORT'),
             'OPTIONS': {
-                'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,public'
+                'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,proyectos,public'
             }
         }
     }
@@ -144,7 +142,7 @@ else:
             'NAME': 'admin_tecom',                      # El nombre de tu base de datos
             'USER': 'postgres',                       # Tu nombre de usuario de PostgreSQL
             'PASSWORD': 'admin',               # La contraseña de tu usuario en PostgreSQL
-            'HOST': 'localhost',                        # O la IP/host donde está tu base de datos
+            'HOST': '172.24.205.98',                        # O la IP/host donde está tu base de datos
             'PORT': '5432',  
             'OPTIONS': {
                 'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,proyectos,public'  # Aquí defines los esquemas
@@ -190,7 +188,7 @@ STATIC_URL = '/static/'
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "templates/.next/static"),  # ajusta esta ruta
+    os.path.join(BASE_DIR, "static"),  # ajusta esta ruta
 ]
 
 
