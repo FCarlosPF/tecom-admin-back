@@ -121,8 +121,7 @@ WSGI_APPLICATION = 'administracion_tecom_back.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if os.getenv('DOCKERIZED') == 'true':
-    DATABASES = {
+DATABASES = {
         'default': {
             'ENGINE': 'django.contrib.gis.db.backends.postgis',
             'NAME': os.getenv('DATABASE_NAME'),
@@ -133,20 +132,6 @@ if os.getenv('DOCKERIZED') == 'true':
             'OPTIONS': {
                 'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,proyectos,public'
             }
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.contrib.gis.db.backends.postgis',  # Usamos el backend de PostgreSQL
-            'NAME': 'admin_tecom',                      # El nombre de tu base de datos
-            'USER': 'postgres',                       # Tu nombre de usuario de PostgreSQL
-            'PASSWORD': 'admin',               # La contraseña de tu usuario en PostgreSQL
-            'HOST': '172.24.205.98',                        # O la IP/host donde está tu base de datos
-            'PORT': '5432',  
-            'OPTIONS': {
-                'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,proyectos,public'  # Aquí defines los esquemas
-            }# El puerto de PostgreSQL (por defecto es 5432)
         }
     }
 

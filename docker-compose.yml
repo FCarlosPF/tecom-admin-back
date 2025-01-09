@@ -21,6 +21,8 @@ services:
       - backend
     networks:
       - tecom_admin_back_tecom_network
+    environment:
+      PORT: 3001 
   backend:
     build:
       context: .
