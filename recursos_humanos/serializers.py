@@ -17,31 +17,32 @@ class EmpleadosSerializer(serializers.ModelSerializer):
         extra_kwargs = {'contrasenia': {'write_only': True}}
         geo_field = "geom"
 
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-    empleado = EmpleadosSerializer(read_only=True)
+class LoginSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
 
-    def validate(self, data):
-        username = data.get('username')
-        password = data.get('password')
+        # Agrega campos adicionales al token si es necesario
+        token['username'] = user.username
+        token['email'] = user.email
 
-        try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            raise serializers.ValidationError("Usuario no encontrado.")
+        return token
 
-        # Verificar la contraseña usando check_password
-        if not user.check_password(password):
-            raise serializers.ValidationError("Contraseña incorrecta.")
-
-        try:
-            empleado = Empleados.objects.get(user=user)
-        except Empleados.DoesNotExist:
-            raise serializers.ValidationError("Empleado no encontrado.")
-
-        data['empleado'] = empleado
-        data['user'] = user  # Asegúrate de incluir esto
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        # Agrega los datos del usuario al response
+        user = self.user
+        data['empleado'] = {
+            'id_empleado': user.id_empleado,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'nombre': user.nombre,
+            'apellidos': user.apellidos,
+            'especialidad': user.especialidad,
+            'activo': user.activo,
+        }
         return data
 
 

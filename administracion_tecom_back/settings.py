@@ -21,12 +21,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-# Verifica que las variables de entorno se carguen correctamente
-print("DATABASE_NAME:", os.getenv('DATABASE_NAME'))
-print("DATABASE_USER:", os.getenv('DATABASE_USER'))
-print("DATABASE_PASSWORD:", os.getenv('DATABASE_PASSWORD'))
-print("DATABASE_HOST:", os.getenv('DATABASE_HOST'))
-print("DATABASE_PORT:", os.getenv('DATABASE_PORT'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -81,11 +75,11 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
-    'USER_ID_FIELD': 'id',
+    'USER_ID_FIELD': 'id_empleado',
     'USER_ID_CLAIM': 'user_id',
     'UPDATE_LAST_LOGIN': True,
     "AUTH_HEADER_TYPES": ("Bearer",),
-
+    'USER_MODEL': 'recursos_humanos.Empleados',  # Usa tu modelo de empleados
 }
 
 MIDDLEWARE = [
@@ -183,7 +177,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),  # ajusta esta ruta
 ]
 
-
+AUTH_USER_MODEL = 'recursos_humanos.Empleados'
 
 
 # Default primary key field type

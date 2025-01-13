@@ -3,7 +3,7 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ../front-admin-tecom
+      context: ../tecom_admin_front
       dockerfile: Dockerfile-front-admin
     ports:
       - "3000:3000"

@@ -3,7 +3,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.hashers import make_password, check_password
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 class Areas(models.Model):
 
@@ -26,9 +26,30 @@ class Roles(models.Model):
         managed = True
 
 
-class Empleados(models.Model):
+class EmpleadoManager(BaseUserManager):
+    def create_user(self, username, password=None, **extra_fields):
+        if not username:
+            raise ValueError('El campo username es obligatorio')
+        user = self.model(username=username, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(username, password, **extra_fields)
+
+class Empleados(AbstractBaseUser, PermissionsMixin):
     id_empleado = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=150, unique=True)
+    first_name = models.CharField(max_length=150, default="")
+    last_name = models.CharField(max_length=150, default="")
+    email = models.EmailField(max_length=254, unique=True, default="")
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
     nombre = models.CharField(max_length=50, blank=True, null=True)
     apellidos = models.CharField(max_length=100, blank=True, null=True)
     correo = models.CharField(unique=True, max_length=100, blank=True, null=True)
@@ -43,15 +64,20 @@ class Empleados(models.Model):
     rol = models.ForeignKey(Roles, models.DO_NOTHING, blank=True, null=True)
     geom = models.GeometryField(blank=True, null=True)
 
+
+    objects = EmpleadoManager()
+
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
+
+
+    def __str__(self):
+        return self.username
+    
     class Meta:
         db_table = '"recursos_humanos"."empleados"'
         managed = True
 
-    def set_password(self, raw_password):
-        self.contrasenia = make_password(raw_password)
-
-    def check_password(self, raw_password):
-        return check_password(raw_password, self.contrasenia)
     
 class Oficina(models.Model):
     nombre = models.CharField(max_length=50, blank=True, null=True)

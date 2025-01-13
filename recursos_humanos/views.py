@@ -12,33 +12,10 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.db import IntegrityError
 from django.views.generic import TemplateView
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-class LoginView(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        empleado = serializer.validated_data['empleado']
-
-        # Generar los tokens usando el modelo User
-        refresh = RefreshToken.for_user(user)
-        tokens = {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-        }
-
-        # Serializar la información del empleado
-        empleado_data = EmpleadoSerializer(empleado).data
-
-        response_data = {
-            "tokens": tokens,
-            "empleado": empleado_data
-        }
-
-        return Response(response_data, status=status.HTTP_200_OK)
-
+class LoginView(TokenObtainPairView):
+    serializer_class = LoginSerializer
 
 class Index(TemplateView):
     methods = ['get']
