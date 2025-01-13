@@ -19,8 +19,14 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv()
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
+# Verifica que las variables de entorno se carguen correctamente
+print("DATABASE_NAME:", os.getenv('DATABASE_NAME'))
+print("DATABASE_USER:", os.getenv('DATABASE_USER'))
+print("DATABASE_PASSWORD:", os.getenv('DATABASE_PASSWORD'))
+print("DATABASE_HOST:", os.getenv('DATABASE_HOST'))
+print("DATABASE_PORT:", os.getenv('DATABASE_PORT'))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -127,8 +133,8 @@ DATABASES = {
             'NAME': os.getenv('DATABASE_NAME'),
             'USER': os.getenv('DATABASE_USER'),
             'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-            'HOST': os.getenv('DATABASE_HOST'),
-            'PORT': os.getenv('DATABASE_PORT'),
+            'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+            'PORT': os.getenv('DATABASE_PORT', '5432'),
             'OPTIONS': {
                 'options': '-c search_path=recursos_humanos,permisos,evaluaciones,sistemas,tareas,proyectos,public'
             }
@@ -170,6 +176,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 STATICFILES_DIRS = [

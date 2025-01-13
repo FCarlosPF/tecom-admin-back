@@ -3,14 +3,14 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ../tecom_admin_front
+      context: ../front-admin-tecom
       dockerfile: Dockerfile-front-admin
     ports:
       - "3000:3000"
     depends_on:
       - backend
     networks:
-      - tecom_admin_back_tecom_network
+      - tecom_admin_network
   frontend-visor:
     build:
       context: ../tecom_admin_visor
@@ -20,15 +20,11 @@ services:
     depends_on:
       - backend
     networks:
-      - tecom_admin_back_tecom_network
-    environment:
-      PORT: 3001 
+      - tecom_admin_network
   backend:
     build:
       context: .
       dockerfile: Dockerfile-back
-    command: >
-      sh -c "gunicorn --bind 0.0.0.0:8000 administracion_tecom_back.wsgi:application"
     volumes:
       - .:/app
     ports:
@@ -37,8 +33,8 @@ services:
       - .env
     restart: unless-stopped
     networks:
-      - tecom_admin_back_tecom_network
+      - tecom_admin_network
 
 networks:
-  tecom_admin_back_tecom_network:
-    external: true
+  tecom_admin_network:
+    name: tecom_admin_network
