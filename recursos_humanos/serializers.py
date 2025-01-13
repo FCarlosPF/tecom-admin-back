@@ -30,8 +30,24 @@ class LoginSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         data = super().validate(attrs)
+        
         # Agrega los datos del usuario al response
         user = self.user
+        
+        # Agrega print statements para depuración
+        print("Usuario autenticado:", user.username)
+        print("Datos del usuario:", {
+            'id_empleado': user.id_empleado,
+            'username': user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'nombre': user.nombre,
+            'apellidos': user.apellidos,
+            'especialidad': user.especialidad,
+            'activo': user.activo,
+        })
+        
         data['empleado'] = {
             'id_empleado': user.id_empleado,
             'username': user.username,
@@ -45,16 +61,8 @@ class LoginSerializer(TokenObtainPairSerializer):
         }
         return data
 
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password']
-        extra_kwargs = {'password': {'write_only': True, 'required': False}}
-
 class EmpleadoSerializer(serializers.ModelSerializer):
     area = serializers.SerializerMethodField()
-    user = UserSerializer()
 
     class Meta:
         model = Empleados
@@ -70,27 +78,10 @@ class EmpleadoSerializer(serializers.ModelSerializer):
         return None
 
     def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        password = user_data.pop('password', None)
-        user = User.objects.create(**user_data)
-        if password:
-            user.set_password(password)
-            user.save()
-        empleado = Empleados.objects.create(user=user, **validated_data)
+        empleado = Empleados.objects.create(**validated_data)
         return empleado
 
     def update(self, instance, validated_data):
-        user_data = validated_data.pop('user', None)
-        if user_data:
-            user = instance.user
-            for attr, value in user_data.items():
-                if attr == 'username' and User.objects.filter(username=value).exclude(pk=user.pk).exists():
-                    raise serializers.ValidationError({"username": "A user with that username already exists."})
-                if attr == 'password':
-                    user.set_password(value)
-                else:
-                    setattr(user, attr, value)
-            user.save()
         return super().update(instance, validated_data)
 
 class AreasReadSerializer(serializers.ModelSerializer):

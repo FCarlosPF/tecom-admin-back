@@ -3,7 +3,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.gis.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.contrib.auth.hashers import make_password, check_password
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
 
 class Areas(models.Model):
 
@@ -24,7 +24,6 @@ class Roles(models.Model):
     class Meta:
         db_table = '"recursos_humanos"."roles"'
         managed = True
-
 
 class EmpleadoManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
@@ -64,6 +63,19 @@ class Empleados(AbstractBaseUser, PermissionsMixin):
     rol = models.ForeignKey(Roles, models.DO_NOTHING, blank=True, null=True)
     geom = models.GeometryField(blank=True, null=True)
 
+    groups = models.ManyToManyField(
+        Group,
+        related_name='empleados_set',
+        related_query_name='empleado',
+        blank=True,
+    )
+
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='empleados_set',
+        related_query_name='empleado',
+        blank=True,
+    )
 
     objects = EmpleadoManager()
 
@@ -77,6 +89,18 @@ class Empleados(AbstractBaseUser, PermissionsMixin):
     class Meta:
         db_table = '"recursos_humanos"."empleados"'
         managed = True
+
+class TokenBlacklistOutstandingtoken(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    jti = models.CharField(unique=True, max_length=255)
+    token = models.TextField()
+    created_at = models.DateTimeField(blank=True, null=True)
+    expires_at = models.DateTimeField()
+    user = models.ForeignKey(Empleados, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = '"recursos_humanos"."token_blacklist_outstandingtoken"'
 
     
 class Oficina(models.Model):
