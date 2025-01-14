@@ -34,6 +34,24 @@ class LoginSerializer(TokenObtainPairSerializer):
         # Agrega los datos del usuario al response
         user = self.user
         
+        geom = None
+        if user.geom:
+            geom = [user.geom.x, user.geom.y]
+            
+            
+        area = None
+        if user.area:
+            area = {
+                'id': user.area.area_id,
+                'nombre': user.area.nombre
+            }
+        
+        rol = None
+        if user.rol:
+            rol = {
+                'id': user.rol.id_rol,
+                'nombre': user.rol.nombre
+            }    
         # Agrega print statements para depuración
         print("Usuario autenticado:", user.username)
         print("Datos del usuario:", {
@@ -45,7 +63,12 @@ class LoginSerializer(TokenObtainPairSerializer):
             'nombre': user.nombre,
             'apellidos': user.apellidos,
             'especialidad': user.especialidad,
-            'activo': user.activo,
+            'foto': user.foto,
+            'activo': user.is_active,
+            'fecha_contratacion': user.fecha_contratacion,
+            'area': area,
+            'rol': rol,
+            'geom': geom
         })
         
         data['empleado'] = {
@@ -57,7 +80,12 @@ class LoginSerializer(TokenObtainPairSerializer):
             'nombre': user.nombre,
             'apellidos': user.apellidos,
             'especialidad': user.especialidad,
-            'activo': user.activo,
+            'foto': user.foto,
+            'activo': user.is_active,
+            'fecha_contratacion': user.fecha_contratacion,
+            'area': area,
+            'rol': rol,
+            'geom': geom
         }
         return data
 
