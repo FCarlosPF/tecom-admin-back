@@ -3,7 +3,7 @@ from .models import Tareas, AsignacionesTareas, ObservacionTarea
 from django.utils.timezone import now, make_aware
 from datetime import datetime
 from django.utils import timezone
-from recursos_humanos.serializers import EmpleadoSerializer
+from recursos_humanos.serializers import EmpleadosSerializer
 from datetime import timedelta
 from proyectos.serializers import ProyectosSerializer
 from proyectos.models import Proyectos
@@ -71,8 +71,8 @@ class TareasSerializer(serializers.ModelSerializer):
     
 class AsignacionesTareasReadSerializer(serializers.ModelSerializer):
     tarea = TareasSerializer()
-    empleado = EmpleadoSerializer()
-    asignador = EmpleadoSerializer()
+    empleado = EmpleadosSerializer()
+    asignador = EmpleadosSerializer()
     class Meta:
         model = AsignacionesTareas
         fields = '__all__'

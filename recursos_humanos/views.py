@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from .serializers import ChangePasswordSerializer, EmpleadosTareasPendientesSerializer,VistaEmpleadosTareasSerializer, LoginSerializer, EmpleadoSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
+from .serializers import ChangePasswordSerializer, EmpleadosTareasPendientesSerializer,VistaEmpleadosTareasSerializer, LoginSerializer, EmpleadosSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
 from .models import Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas, EmpleadosTareasPendientes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -13,6 +13,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from django.db import IntegrityError
 from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
@@ -25,20 +26,24 @@ class Panel(TemplateView):
     methods = ['get']
     template_name = "recursos_humanos/panel.html"
 
-class EmpleadoListCreateView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista
+class EmpleadosViewSet(viewsets.ModelViewSet):
     queryset = Empleados.objects.all()
-    serializer_class = EmpleadoSerializer
+    serializer_class = EmpleadosSerializer
+    permission_classes = [IsAuthenticated]  # Cambia según tus necesidades
 
+    def perform_create(self, serializer):
+        """Sobrescribe para agregar lógica adicional al crear"""
+        # Ejemplo: Asignar un rol por defecto al crear un nuevo empleado
+        # Puede personalizarse según tu lógica
+        instance = serializer.save()
+        # ejemplo: instance.rol = 'rol predeterminado'
+        instance.save()
 
-class EmpleadoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset = Empleados.objects.select_related('area', 'rol', 'user').all()
-    serializer_class = EmpleadoSerializer
-    lookup_field = 'id_empleado'
-    
-def healthcheck(request):
-    return JsonResponse({"status": "ok"})    
+    def get_permissions(self):
+        """Se puede sobrecargar para definir diferentes permisos"""
+        if self.action in ['create', 'update', 'destroy']:
+            self.permission_classes = [IsAdminUser]  # Solo administradores
+        return super().get_permissions()
 
 class AreasListCreateView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]  # Solo usuarios autenticados pueden acceder a esta vista

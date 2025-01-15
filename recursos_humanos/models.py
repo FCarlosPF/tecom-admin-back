@@ -49,15 +49,9 @@ class Empleados(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
-    nombre = models.CharField(max_length=50, blank=True, null=True)
-    apellidos = models.CharField(max_length=100, blank=True, null=True)
-    correo = models.CharField(unique=True, max_length=100, blank=True, null=True)
     especialidad = models.CharField(max_length=50, blank=True, null=True)
     sueldo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    activo = models.BooleanField(blank=True, null=True)
     foto = models.CharField(max_length=100, blank=True, null=True)
-    nombre_usuario = models.CharField(max_length=100, blank=True, null=True)  # No requerido
-    contrasenia = models.TextField(blank=True, null=True)  # No requerido
     fecha_contratacion = models.DateField(blank=True, null=True)
     area = models.ForeignKey(Areas, models.DO_NOTHING, blank=True, null=True)
     rol = models.ForeignKey(Roles, models.DO_NOTHING, blank=True, null=True)
@@ -113,20 +107,20 @@ class Oficina(models.Model):
 
 class VistaEmpleadosTareas(models.Model):
     id_empleado = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=100)
-    apellidos = models.CharField(max_length=100)
-    correo = models.EmailField()
-    especialidad = models.CharField(max_length=100, blank=True, null=True)
+    nombre = models.CharField(max_length=150)  # Cambiado a first_name con max_length 150
+    apellidos = models.CharField(max_length=150)  # Cambiado a last_name con max_length 150
+    correo = models.EmailField(max_length=254)  # Cambiado a email con max_length 254
+    especialidad = models.CharField(max_length=50, blank=True, null=True)  # Sin cambios
     sueldo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    activo = models.BooleanField(default=True)
+    activo = models.BooleanField(default=True)  # Cambiado a is_active
     foto = models.CharField(max_length=100, blank=True, null=True)
-    nombre_usuario = models.CharField(max_length=100, unique=True)
-    contrasenia = models.CharField(max_length=100)
+    nombre_usuario = models.CharField(max_length=150, unique=True)  # Cambiado a username con max_length 150
+    contrasenia = models.CharField(max_length=128)  # Cambiado a password con max_length 128
     fecha_contratacion = models.DateField()
     area_id = models.IntegerField(blank=True, null=True)
     rol_id = models.IntegerField(blank=True, null=True)
     geom = models.GeometryField(blank=True, null=True)
-    proyectos_ids = ArrayField(models.IntegerField(), blank=True, null=True)  # Array de proyectos únicos
+    proyectos_ids = ArrayField(models.IntegerField(), blank=True, null=True)  # Sin cambios
     cantidad_tareas_pendientes_o_en_progreso = models.IntegerField()
 
     class Meta:
