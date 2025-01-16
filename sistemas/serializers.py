@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from .models import Asistencias,Notificaciones, VistaNotificacionesEmpleados
-from recursos_humanos.serializers import EmpleadoSerializer
+from recursos_humanos.serializers import EmpleadosSerializer
 
 class AsistenciasSerializer(serializers.ModelSerializer):
-    empleado = EmpleadoSerializer(read_only=True)  # Incluimos detalles del empleado
+    empleado = EmpleadosSerializer(read_only=True)  # Incluimos detalles del empleado
 
     class Meta:
         model = Asistencias
