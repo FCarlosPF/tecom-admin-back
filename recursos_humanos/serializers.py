@@ -1,20 +1,19 @@
 from rest_framework import serializers
 from .models import EmpleadosTareasPendientes, Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas
-from django.contrib.auth.hashers import check_password
 from rest_framework import generics
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from django.contrib.auth.models import User,Group, Permission
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password,is_password_usable
 
-from django.contrib.auth.hashers import check_password
 from rest_framework import serializers
 from .models import Empleados
 
 class EmpleadosSerializer(serializers.ModelSerializer):
     # Usamos un PrimaryKeyRelatedField para POST/UPDATE (permite el id del área)
     area = serializers.PrimaryKeyRelatedField(queryset=Areas.objects.all(), write_only=True, required=False)
-    
+    update_password = serializers.BooleanField(default=False)
+
     # Usamos un StringRelatedField para GET (muestra el nombre del área)
     area_nombre = serializers.StringRelatedField(source='area.nombre', read_only=True)
 
@@ -27,7 +26,7 @@ class EmpleadosSerializer(serializers.ModelSerializer):
             'id_empleado', 'username', 'first_name', 'last_name', 'email',
             'password', 'is_staff', 'is_active', 'date_joined', 'especialidad',
             'sueldo', 'foto', 'fecha_contratacion', 'area', 'area_nombre', 'rol', 'geom',
-            'groups', 'user_permissions'
+            'groups', 'user_permissions','update_password'
         ]
         read_only_fields = ['id_empleado', 'date_joined', 'area_nombre']
         extra_kwargs = {
@@ -37,7 +36,6 @@ class EmpleadosSerializer(serializers.ModelSerializer):
             'email': {'required': False, 'allow_blank': True},
             'area': {'required': False, 'allow_null': True}
         }
-
     def create(self, validated_data):
         groups_data = validated_data.pop('groups', [])
         user_permissions_data = validated_data.pop('user_permissions', [])
@@ -64,13 +62,15 @@ class EmpleadosSerializer(serializers.ModelSerializer):
         user_permissions_data = validated_data.pop('user_permissions', [])
         area = validated_data.pop('area', None)
         password = validated_data.pop('password', None)
+        update_password = validated_data.pop('update_password', False)
+        print(f"Password: {password}, Update Password: {update_password}")
 
         # Actualiza otros campos del empleado
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
         # Si se proporciona un password, lo actualizamos
-        if password:
+        if password and update_password:
             instance.password = make_password(password)
 
         # Asignamos el área si se proporciona
@@ -183,13 +183,10 @@ class EmpleadosTareasPendientesSerializer(serializers.ModelSerializer):
         model = EmpleadosTareasPendientes
         fields = '__all__'
 
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
 
-class ChangePasswordSerializer(serializers.Serializer):
-    contraseña_antigua = serializers.CharField(required=True, label="Contraseña antigua")
-    nueva_contraseña = serializers.CharField(required=True, label="Nueva contraseña")
-    repetir_nueva_contraseña = serializers.CharField(required=True, label="Repetir nueva contraseña")
-
-    def validate(self, data):
-        if data['nueva_contraseña'] != data['repetir_nueva_contraseña']:
-            raise serializers.ValidationError({"repetir_nueva_contraseña": "Las contraseñas no coinciden."})
-        return data
+    def validate_email(self, value):
+        if not Empleados.objects.filter(email=value).exists():
+            raise serializers.ValidationError("No user is associated with this email address.")
+        return value

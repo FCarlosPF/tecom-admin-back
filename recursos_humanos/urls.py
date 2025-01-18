@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import EmpleadosViewSet,ChangePasswordView,EmpleadosTareasPendientesListView, VistaEmpleadosTareasListView, LoginView, AreasListCreateView, RolesListCreateView, RolesRetrieveUpdateDestroyView, AreasRetrieveUpdateDestroyView, OficinaViewSet
+from .views import PasswordResetRequestView,PasswordResetConfirmView,EmpleadosViewSet,EmpleadosTareasPendientesListView, VistaEmpleadosTareasListView, LoginView, AreasListCreateView, RolesListCreateView, RolesRetrieveUpdateDestroyView, AreasRetrieveUpdateDestroyView, OficinaViewSet
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -16,7 +16,9 @@ urlpatterns = [
     path('roles/<int:pk>/', RolesRetrieveUpdateDestroyView.as_view(), name='roles-retrieve-update-destroy'),
     path('vista-empleados-tareas/', VistaEmpleadosTareasListView.as_view(), name='vista-empleados-tareas-list'),
     path('tareas-pendientes/<int:id_empleado>/', EmpleadosTareasPendientesListView.as_view(), name='tareas-pendientes'),
-    path('change-password/', ChangePasswordView.as_view(), name='change-password'),
+    path('password-reset/', PasswordResetRequestView.as_view(), name='password-reset-request'),
+    path('reset-password/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
+    path('', include(router.urls)),
     path('', include(router.urls)),
 
 ]

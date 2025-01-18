@@ -131,3 +131,5 @@ def calcular_metricas_por_empleado(empleado_id):
         "datos_grafico_torta": datos_grafico_torta,
         "tareas_completadas": tareas_completadas
     }
+    
+    

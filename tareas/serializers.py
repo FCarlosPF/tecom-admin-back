@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Tareas, AsignacionesTareas, ObservacionTarea
+from recursos_humanos.models import Empleados
 from django.utils.timezone import now, make_aware
 from datetime import datetime
 from django.utils import timezone
@@ -115,6 +116,21 @@ class AsignacionesTareasUpdateSerializer(serializers.ModelSerializer):
 
 
 class ObservacionTareaSerializer(serializers.ModelSerializer):
+    
+    empleado = EmpleadosSerializer(read_only=True)
+    empleado_id = serializers.PrimaryKeyRelatedField(queryset=Empleados.objects.all(), write_only=True)
+
     class Meta:
         model = ObservacionTarea
         fields = '__all__'
+        
+    def create(self, validated_data):
+        empleado_id = validated_data.pop('empleado_id')
+        observacion_tarea = ObservacionTarea.objects.create(empleado_id=empleado_id.id_empleado, **validated_data)
+        return observacion_tarea
+
+    def update(self, instance, validated_data):
+        empleado_id = validated_data.pop('empleado_id', None)
+        if empleado_id:
+            instance.empleado_id = empleado_id.id_empleado
+        return super().update(instance, validated_data)

@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
-from .serializers import ChangePasswordSerializer, EmpleadosTareasPendientesSerializer,VistaEmpleadosTareasSerializer, LoginSerializer, EmpleadosSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
+from .serializers import  PasswordResetRequestSerializer,EmpleadosTareasPendientesSerializer,VistaEmpleadosTareasSerializer, LoginSerializer, EmpleadosSerializer,RolesSerializer,AreasReadSerializer, AreasWriteSerializer, OficinaSerializer
 from .models import Empleados, Areas, Roles, Oficina, VistaEmpleadosTareas, EmpleadosTareasPendientes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -14,6 +14,13 @@ from django.db import IntegrityError
 from django.views.generic import TemplateView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from django.core.mail import send_mail
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import default_token_generator
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.conf import settings
 
 class LoginView(TokenObtainPairView):
     serializer_class = LoginSerializer
@@ -108,39 +115,52 @@ class EmpleadosTareasPendientesListView(generics.ListAPIView):
         id_empleado = self.kwargs['id_empleado']
         return EmpleadosTareasPendientes.objects.filter(id_empleado=id_empleado)
 
-class ChangePasswordView(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [JWTAuthentication]
 
+class PasswordResetRequestView(APIView):
     def post(self, request):
-        # Buscar al empleado relacionado
-        try:
-            empleado = Empleados.objects.get(correo=request.user.email)
-        except Empleados.DoesNotExist:
-            return Response(
-                {"detail": "No se encontró al empleado relacionado con este usuario."},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-
-        # Validar los datos enviados
-        serializer = ChangePasswordSerializer(data=request.data)
+        serializer = PasswordResetRequestSerializer(data=request.data)
         if serializer.is_valid():
-            contraseña_antigua = serializer.validated_data['contraseña_antigua']
-            nueva_contraseña = serializer.validated_data['nueva_contraseña']
-
-            # Verificar la contraseña actual
-            if not empleado.check_password(contraseña_antigua):
-                return Response(
-                    {"contraseña_antigua": "Contraseña incorrecta."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-
-            # Actualizar la contraseña
-            empleado.set_password(nueva_contraseña)
-            empleado.save()
-            return Response(
-                {"detail": "Contraseña cambiada exitosamente."},
-                status=status.HTTP_200_OK,
+            email = serializer.validated_data['email']
+            user = Empleados.objects.get(email=email)
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            # Cambia la URL para que apunte a tu aplicación Next.js
+            reset_url = f"http://localhost:3000/reset-password/{uid}/{token}/"
+            # URL del logo
+            logo_url = request.build_absolute_uri(f"{settings.STATIC_URL}images/logo.jpg")
+            # Renderizar la plantilla HTML
+            html_message = render_to_string('django/password_reset_email.html', {
+                'user': user,
+                'reset_url': reset_url,
+                'logo_url': logo_url,
+            })
+            # Convertir el mensaje HTML a texto plano
+            plain_message = strip_tags(html_message)
+            send_mail(
+                'Password Reset Request',
+                plain_message,
+                'carlos.paucar@tecomsg.com.pe',
+                [email],
+                fail_silently=False,
+                html_message=html_message,
             )
-
+            return Response({"detail": "Password reset email sent."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class PasswordResetConfirmView(APIView):
+    def post(self, request):
+        uidb64 = request.data.get('uid')
+        token = request.data.get('token')
+        new_password = request.data.get('password')
+        
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = Empleados.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, Empleados.DoesNotExist):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            user.set_password(new_password)
+            user.save()
+            return Response({"detail": "Password has been reset."}, status=status.HTTP_200_OK)
+        return Response({"detail": "Invalid token or user ID."}, status=status.HTTP_400_BAD_REQUEST)
