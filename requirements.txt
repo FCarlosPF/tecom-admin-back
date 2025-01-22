@@ -26,3 +26,4 @@ sqlparse==0.5.2
 typing_extensions==4.12.2
 urllib3==2.3.0
 uWSGI==2.0.28
+whitenoise==6.8.2

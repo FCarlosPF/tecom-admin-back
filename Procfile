@@ -1,0 +1,1 @@
+web: gunicorn administracion_tecom_back.wsgi --log-file -
