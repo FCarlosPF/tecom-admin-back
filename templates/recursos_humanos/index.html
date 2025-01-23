@@ -6,7 +6,8 @@
     <meta charSet="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="{% static 'recursos_humanos/84d1020931b3cf80.css' %}" data-precedence="next" />
-    <link rel="preload" as="script" fetchPriority="low" href="{% static 'recursos_humanos/webpack-89453a5ba90ebf4c.js' %}" />
+    <link rel="preload" as="script" fetchPriority="low"
+        href="{% static 'recursos_humanos/webpack-89453a5ba90ebf4c.js' %}" />
     <script src="{% static 'recursos_humanos/4bd1b696-decdecc97921e6ad.js' %}" async=""></script>
     <script src="{% static 'recursos_humanos/517-83147a77d3f8ff1e.js' %}" async=""></script>
     <script src="{% static 'recursos_humanos/main-app-891d7349b0a15ed2.js' %}" async=""></script>
@@ -33,6 +34,7 @@
             <div class="w-full md:w-1/2 p-6">
                 <h2 class="text-center text-3xl font-bold text-white mb-6">Iniciar Sesión</h2>
                 <form>
+                    {% csrf_token %}
                     <div class="mb-4"><label for="username" class="block text-sm font-bold text-white mb-2">Nombre de
                             Usuario</label><input type="text" id="username"
                             class="w-full p-3 rounded-lg bg-gray-800 shadow-inner focus:outline-none text-white font-bold"
